@@ -24,6 +24,7 @@ library(tidyverse) # load the package tidyverse
 # Data in R is usually stored in data frames, with one row per observation
 # and one column per variable. The tidyverse tools work naturally with 
 # data frames, but prefer a new data format called a tibble. 
+library(ggplot2)
 
 # mtcars data frame
 mtcars
@@ -130,6 +131,7 @@ movies %>%
 # Example 6.3
 # In order to find the mean rating of each movie, we will use 
 # the group_by() function.
+movies = as_tibble(movies)
 movies %>%
   group_by(title) %>% 
   summarize(mean(rating))
@@ -297,10 +299,10 @@ accelerometer %>%
 ### 6.6 The structure of data
 ### 6.6.1 Tidy data: pivoting
 # 1
-WorldPhones <- as_tibble(WorldPhones)
-WorldPhones$years = c(1951, 1956, 1957, 1958, 1959, 1960, 1961)
-WorldPhones %>% 
-  pivot_longer(names(WorldPhones)[-8], 
+WorldPhones1 <- as_tibble(WorldPhones)
+WorldPhones1$years = c(1951, 1956, 1957, 1958, 1959, 1960, 1961)
+WorldPhones1 %>% 
+  pivot_longer(names(WorldPhones1)[-8], 
                names_to = "country",
                values_to = "telephones")
 # 2
