@@ -1,0 +1,114 @@
+---
+title: "Collected Homework"
+author: "Jackie Budka"
+date: "9/17/2021"
+output: html_notebook
+---
+### 1.7
+```{r 1.7}
+### 1.7
+# a.
+?rivers
+
+# b.
+mean(rivers)
+sd(rivers)
+
+# c. 
+hist(rivers)
+
+# d.
+summary(rivers)
+
+# e.
+max(rivers)
+min(rivers)
+
+# f. 
+rivers[rivers > 1000]
+
+```
+### 1.8
+```{r 1.8}
+### 1.8
+# a. 
+# number of observations
+nrow(airquality)
+# number of variables
+ncol(airquality)
+
+# b.
+names(airquality)
+
+# c. 
+str(airquality)
+
+# d. 
+# Values like temperature, solar.R, and ozone would have been better as numerical variables instead of integers because integers are limiting.
+
+```
+
+
+
+### 2.5
+```{r 2.5}
+### 2.5
+MnM <- c(0.14,0.13,0.2,0.12,0.2,0.21)
+# a.
+PnotGreen <- sum(0.14,0.13,0.2,0.12,0.21)
+PnotGreen
+
+# b.
+PRedOrangeYellow <- sum(0.13,0.2,0.14)
+PRedOrangeYellow
+
+# c.
+MnMname <- c("Yellow", "Red", "Orange", "Brown", "Green", "Blue")
+MnM <- c(0.14, 0.13, 0.2, 0.12, 0.2, 0.21)
+Pick4 <- replicate(10000, {
+  my_simulation <- sample(
+    x = MnMname,
+    size = 4,
+    prob = MnM,
+    replace = TRUE
+  )
+  sum(my_simulation == "Blue") >= 1
+})
+mean(Pick4)
+
+# d.
+MnMname <- c("Yellow", "Red", "Orange", "Brown", "Green", "Blue")
+MnM <- c(0.14, 0.13, 0.2, 0.12, 0.2, 0.21)
+Pick6 <- replicate(10000, {
+  my_simulation6 <- sample(
+    x = MnMname,
+    size = 6,
+    prob = MnM,
+    replace = TRUE
+  )
+  sum(my_simulation6 == "Blue") == 1 &
+    sum(my_simulation6 == "Yellow") ==1 &
+    sum(my_simulation6 == "Red") ==1 &
+    sum(my_simulation6 == "Orange") ==1 &
+    sum(my_simulation6 == "Green") ==1 &
+    sum(my_simulation6 == "Brown") ==1 
+})
+mean(Pick6)
+
+
+```
+### 2.9
+```{r 2.9}
+
+x <- c("H", "T")
+Flip7a <- replicate(10000, {
+  Flip7 <- sample(x, 7, TRUE)
+  sum(Flip7=="H") == 3
+})
+mean(Flip7a)
+
+```
+
+
+
+

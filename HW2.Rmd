@@ -1,0 +1,27 @@
+---
+title: "Collected HW2"
+author: "Jackie Budka"
+date: "10/6/2021"
+output: html_notebook
+---
+
+### 3.2
+```{r}
+ss <- sample(x=c(1/4,1/2,1/8,1/8),10000,replace = TRUE)
+ssmean <- mean(ss)
+table(ss)
+```
+### 3.34
+```{r}
+poisson1 <- dpois(300,10)
+binomial1 <- (dbinom(2, size = 300, prob = 2/300))
+poisson1
+binomial1
+binomial1-poisson1
+```
+### 4.13
+```{r}
+
+```
+
+
