@@ -13,28 +13,43 @@ output: html_notebook
 7.22
 
 
-# Question 7.6, a-b
+### Question 7.6, a-b
+The data set storms is included in the dplyr package. It contains information about 425 tropical storms in the Atlantic.
 
+a. Produce a histogram of the wind speeds in this data set. Fill your bars using the category variable so you can see the bands of color corresponding to the different storm categories.
+
+b. Repeat part (a) but make a histogram of the pressure variable. You should observe that high category storms have low pressure.
 ```{r }
 
 ```
 
-# Question 7.14
+### Question 7.14
+Make a scatterplot showing  
+C
+O
+2
+  uptake as a function of concentration level for the built-in data set CO2. Include a smoothed fit line and color by Type. Facet your plot to one plot for each Plant.
 ```{r }
 
 ```
 
-# Question 7.20
+### Question 7.20
+Use the People data set from the Lahman package.
+
+Create a barplot of the birth months of all players. (Hint: geom_bar())
+Create a barplot of the birth months of the players born in the USA after 1970.
 ```{r }
 
 ```
 
-# Question 7.21
+### Question 7.21
+Make a line graph of the total number of babies of each sex versus year.
 ```{r }
 
 ```
 
-# Question 7.22
+### Question 7.22
+Make a line graph of the number of different names used for each sex versus year.
 ```{r }
 
 ```
