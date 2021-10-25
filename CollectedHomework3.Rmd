@@ -1,0 +1,44 @@
+---
+title: "Collected Homework 3"
+author: "Jackie Budka, Kristina Franklin, Connor Hathaway"
+date: "10/25/2021"
+output: html_notebook
+---
+
+## Questions
+7.6, a-b
+7.14
+7.20
+7.21
+7.22
+
+
+# Question 7.6, a-b
+
+```{r }
+
+```
+
+# Question 7.14
+```{r }
+
+```
+
+# Question 7.20
+```{r }
+
+```
+
+# Question 7.21
+```{r }
+
+```
+
+# Question 7.22
+```{r }
+
+```
+
+
+
+
