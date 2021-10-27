@@ -12,6 +12,15 @@ output: html_notebook
 7.21
 7.22
 
+#### Load Packages
+```{r}
+library(tidyverse)
+library(dplyr)
+library(Lahman)
+library(janitor)
+```
+
+
 
 ### Question 7.6, a-b
 The data set storms is included in the dplyr package. It contains information about 425 tropical storms in the Atlantic.
@@ -24,23 +33,36 @@ b. Repeat part (a) but make a histogram of the pressure variable. You should obs
 ```
 
 ### Question 7.14
-Make a scatterplot showing  
-C
-O
-2
-  uptake as a function of concentration level for the built-in data set CO2. Include a smoothed fit line and color by Type. Facet your plot to one plot for each Plant.
+Make a scatterplot showing CO2 uptake as a function of concentration level for the built-in data set CO2. Include a smoothed fit line and color by Type. Facet your plot to one plot for each Plant.
 ```{r }
 
 ```
 
 ### Question 7.20
-Use the People data set from the Lahman package.
+Use the "People" data set from the "Lahman" package.
 
 Create a barplot of the birth months of all players. (Hint: geom_bar())
 Create a barplot of the birth months of the players born in the USA after 1970.
-```{r }
-
+```{r barplot of birth months of all players}
+People %>%
+ggplot(People1, mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
+labs(
+  title = "Birth Months of All Players",
+  x = "Birth Month",
+  y = "Number of Players"
+)
 ```
+```{r bar plot of birth months of USA players}
+People %>%
+  filter(birthCountry == "USA", birthYear >= 1970) %>%
+ggplot(Peeps, mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
+labs(
+  title = "Birth Months of USA Players",
+  x = "Birth Month",
+  y = "Number of Players"
+)
+```
+
 
 ### Question 7.21
 Make a line graph of the total number of babies of each sex versus year.
