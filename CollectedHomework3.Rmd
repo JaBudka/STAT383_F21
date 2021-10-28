@@ -69,7 +69,7 @@ labs(
 Make a line graph of the total number of babies of each sex versus year.
 ```{r }
 babyname_count <- tabyl(babynames, year, sex)
-#View(babyname_count)
+View(babyname_count)
 bnc_F <- babyname_count %>%
   select(year, F)
 
@@ -89,9 +89,27 @@ ggplot() +
 ```
 
 ### Question 7.22
+# This one is not working rn Jackie is trying to fix it but also needs to eat dinner
 Make a line graph of the number of different names used for each sex versus year.
 ```{r }
+babyname_diff <- tabyl(babynames, year, name, sex)
+View(babyname_diff)
+bnc_F <- babyname_diff %>%
+  select(year, F)
 
+bnc_M <- babyname_diff%>%
+  select(year,M)
+  
+ggplot() + 
+    geom_line(bnc_F,mapping = aes(x = year, y = F, color = "red"))  +   
+    geom_line(bnc_M, mapping = aes(x = year, y = M, color = "blue")) + 
+    labs(
+  title = "Total number of babies of each sex versus year",
+  x = "Birth Year",
+  y = "Number of Babies") +
+  theme(legend.title = element_text(colour="black", size=10, face="bold")) +
+  scale_color_manual(labels = c("Female", "Male"), values = c("red", "blue"))
+  
 ```
 
 
