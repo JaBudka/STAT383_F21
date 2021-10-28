@@ -18,6 +18,7 @@ library(tidyverse)
 library(dplyr)
 library(Lahman)
 library(janitor)
+library(babynames)
 ```
 
 
@@ -45,7 +46,7 @@ Create a barplot of the birth months of all players. (Hint: geom_bar())
 Create a barplot of the birth months of the players born in the USA after 1970.
 ```{r barplot of birth months of all players}
 People %>%
-ggplot(People1, mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
+ggplot(mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
 labs(
   title = "Birth Months of All Players",
   x = "Birth Month",
@@ -55,7 +56,7 @@ labs(
 ```{r bar plot of birth months of USA players}
 People %>%
   filter(birthCountry == "USA", birthYear >= 1970) %>%
-ggplot(Peeps, mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
+ggplot(mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
 labs(
   title = "Birth Months of USA Players",
   x = "Birth Month",
@@ -67,7 +68,24 @@ labs(
 ### Question 7.21
 Make a line graph of the total number of babies of each sex versus year.
 ```{r }
+babyname_count <- tabyl(babynames, year, sex)
+#View(babyname_count)
+bnc_F <- babyname_count %>%
+  select(year, F)
 
+bnc_M <- babyname_count%>%
+  select(year,M)
+  
+ggplot() + 
+    geom_line(bnc_F,mapping = aes(x = year, y = F, color = "red"))  +   
+    geom_line(bnc_M, mapping = aes(x = year, y = M, color = "blue")) + 
+    labs(
+  title = "Total number of babies of each sex versus year",
+  x = "Birth Year",
+  y = "Number of Babies") +
+  theme(legend.title = element_text(colour="black", size=10, face="bold")) +
+  scale_color_manual(labels = c("Female", "Male"), values = c("red", "blue"))
+  
 ```
 
 ### Question 7.22
