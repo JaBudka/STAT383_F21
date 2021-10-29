@@ -63,12 +63,15 @@ ggplot(storms, aes(x = pressure)) + geom_histogram(aes(fill = category)) +
 )
 
 ```
-```
 
 ### Question 7.14
 Make a scatterplot showing CO2 uptake as a function of concentration level for the built-in data set CO2. Include a smoothed fit line and color by Type. Facet your plot to one plot for each Plant.
 ```{r }
-
+CO2 <- as_tibble(CO2)
+ggplot(CO2, aes(x = conc, y = uptake, color = Type)) +
+  geom_point() +
+  geom_smooth() +
+  facet_wrap(vars(Plant))
 ```
 
 ### Question 7.20
@@ -76,6 +79,8 @@ Use the "People" data set from the "Lahman" package.
 
 Create a barplot of the birth months of all players. (Hint: geom_bar())
 Create a barplot of the birth months of the players born in the USA after 1970.
+#### Part a
+
 ```{r barplot of birth months of all players}
 People %>%
 ggplot(mapping = aes(x = birthMonth)) + geom_bar() + scale_x_discrete(limit = c(1:12)) +
@@ -85,6 +90,8 @@ labs(
   y = "Number of Players"
 )
 ```
+
+#### Part b
 ```{r bar plot of birth months of USA players}
 People %>%
   filter(birthCountry == "USA", birthYear >= 1970) %>%
@@ -121,27 +128,16 @@ ggplot() +
 ```
 
 ### Question 7.22
-# This one is not working rn Jackie is trying to fix it but also needs to eat dinner
 Make a line graph of the number of different names used for each sex versus year.
 ```{r }
-babyname_diff <- tabyl(babynames, year, name, sex)
-View(babyname_diff)
-bnc_F <- babyname_diff %>%
-  select(year, F)
-
-bnc_M <- babyname_diff%>%
-  select(year,M)
-  
-ggplot() + 
-    geom_line(bnc_F,mapping = aes(x = year, y = F, color = "red"))  +   
-    geom_line(bnc_M, mapping = aes(x = year, y = M, color = "blue")) + 
+babynames_diff <- babynames %>%
+ggplot(mapping = aes(x = year, y = n)) +
+    geom_line()  +
     labs(
   title = "Total number of babies of each sex versus year",
   x = "Birth Year",
-  y = "Number of Babies") +
-  theme(legend.title = element_text(colour="black", size=10, face="bold")) +
-  scale_color_manual(labels = c("Female", "Male"), values = c("red", "blue"))
-  
+  y = "Number of Babies") 
+
 ```
 
 
