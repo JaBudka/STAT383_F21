@@ -130,18 +130,16 @@ ggplot() +
 ### Question 7.22
 Make a line graph of the number of different names used for each sex versus year.
 ```{r }
-babyname_diff <- select(babynames, year, sex, name)# %>%
+babyname_diff <- select(babynames, year, sex, name) %>%
   #View(babyname_diff) %>%
-as_tibble(babyname_diff)
-bb_name <- group_by(babyname_diff, sex, year) 
-count(bb_name,name)
-#  length(unique(bb_name$name)) 
-# ggplot(mapping = aes(x = year, y = )) +
-#     geom_line()  +
-#     labs(
-#   title = "Total number of babies of each sex versus year",
-#   x = "Birth Year",
-#   y = "Number of Babies") 
+group_by(sex, year) %>%
+summarise(n()) %>%
+ggplot(mapping = aes(x = year, y = n0)) +
+    geom_line()  +
+    labs(
+  title = "Total number of babies of each sex versus year",
+  x = "Birth Year",
+  y = "Number of Babies")
 
 ```
 
