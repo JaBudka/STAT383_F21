@@ -106,26 +106,34 @@ labs(
 
 ### Question 7.21
 Make a line graph of the total number of babies of each sex versus year.
-```{r }
-babyname_count <- tabyl(babynames, year, sex)
-View(babyname_count)
+```{r}
+babyname_count <- select(babynames, year, sex, n) %>%
+  group_by(year, sex) %>%
+    summarise(n = sum(n))
+
 bnc_F <- babyname_count %>%
-  select(year, F)
+  filter(sex =="F") %>%
+  select(year, n)
+
 
 bnc_M <- babyname_count%>%
-  select(year,M)
+    filter(sex =="M") %>%
+  select(year,n)
   
 ggplot() + 
-    geom_line(bnc_F,mapping = aes(x = year, y = F, color = "red"))  +   
-    geom_line(bnc_M, mapping = aes(x = year, y = M, color = "blue")) + 
+    geom_line(bnc_F,mapping = aes(x = year, y = n, color = "red"))  +   
+    geom_line(bnc_M, mapping = aes(x = year, y = n, color = "blue")) + 
     labs(
   title = "Total number of babies of each sex versus year",
   x = "Birth Year",
   y = "Number of Babies") +
   theme(legend.title = element_text(colour="black", size=10, face="bold")) +
   scale_color_manual(labels = c("Female", "Male"), values = c("red", "blue"))
-  
+
 ```
+
+
+
 
 ### Question 7.22
 Make a line graph of the number of different names used for each sex versus year.
@@ -135,7 +143,8 @@ babyname_diff <- select(babynames, year, sex, name) %>%
   summarise(n()) %>%
   rename("numb" = "n()") 
   
-  bnt_F <- filter(babyname_diff, sex == "F") %>%
+  bnt_F <- babyname_diff %>%
+    filter(sex =="F") %>%
   select(year, numb)
 
 bnt_M <- babyname_diff %>%
@@ -158,23 +167,3 @@ ggplot() +
 
 
 
-```{r }
-babyname_diff <- select(babynames, year, sex, name) %>%
-  #View(babyname_diff) %>%
-group_by(sex, year) %>%
-summarise(n()) %>%
-ggplot(mapping = aes(x = year, y = n0)) +
-    geom_line()  +
-    labs(
-  title = "Total number of babies of each sex versus year",
-  x = "Birth Year",
-  y = "Number of Babies")
-
-```
-
-```{r }
-babyname_diff1 <- select(babynames, year, sex, name, n)%>%
-filter(year == 1880) %>%
-  sum(n)
-
-```
