@@ -30,7 +30,39 @@ a. Produce a histogram of the wind speeds in this data set. Fill your bars using
 
 b. Repeat part (a) but make a histogram of the pressure variable. You should observe that high category storms have low pressure.
 ```{r }
+storms <- dplyr::storms
 
+ggplot(storms, aes(x = wind)) + geom_histogram(aes(fill = category)) +
+
+  labs(title = "Wind Speeds of Storms",
+
+    x = "Storms",
+
+    y = "Wind Speeds",
+
+    fill = "category"
+
+)
+
+```
+
+```{r}
+
+storms <- dplyr::storms
+
+ggplot(storms, aes(x = pressure)) + geom_histogram(aes(fill = category)) +
+
+  labs(title = "Air Pressure of Storms",
+
+    x = "Storms",
+
+    y = "Air Pressures",
+
+    fill = "Category",
+
+)
+
+```
 ```
 
 ### Question 7.14
