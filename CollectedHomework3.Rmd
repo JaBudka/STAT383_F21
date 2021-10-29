@@ -133,15 +133,26 @@ Make a line graph of the number of different names used for each sex versus year
 babyname_diff <- select(babynames, year, sex, name) %>%
   group_by(year, sex) %>%
   summarise(n()) %>%
-  rename("numb" = "n()") %>%
+  rename("numb" = "n()") 
   
+  bnt_F <- filter(babyname_diff, sex == "F") %>%
+  select(year, numb)
+
+bnt_M <- babyname_diff %>%
+  filter(sex == "M") %>%
+  select(year, numb)
   
-  ggplot(mapping = aes(x = year, y = numb)) +
-    geom_line()  +
+ggplot() + 
+    geom_line(bnt_F,mapping = aes(x = year, y = numb, color = "red"))  +   
+    geom_line(bnt_M, mapping = aes(x = year, y = numb, color = "blue")) + 
     labs(
-  title = "Total number of babies of each sex versus year",
+  title = "Total number of different baby names of each sex versus year",
   x = "Birth Year",
-  y = "Number of Babies")
+  y = "Number of Baby Names") +
+  theme(legend.title = element_text(colour="black", size=10, face="bold")) +
+  scale_color_manual(labels = c("Female", "Male"), values = c("red", "blue"))
+  
+
 ```
 
 
