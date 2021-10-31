@@ -1,0 +1,231 @@
+---
+title: "DC Bikeshare"
+author: "Jackie Budka"
+date: "10/31/2021"
+output: html_notebook
+---
+
+
+```{r load packages}
+library(tidyverse)
+library(tidymodels)
+library(dsbox)
+```
+
+```{r recode season}
+dcbikeshare <- dcbikeshare %>%
+  mutate(
+    season = case_when(
+      season == 1 ~ "winter",
+      season == 2 ~ "spring",
+      season == 3 ~ "summer",
+      season == 4 ~ "fall"
+    ),
+    season = fct_relevel(season, "spring", "summer", "fall", "winter")
+  )
+```
+
+
+```{r recode holiday and workingday}
+dcbikeshare <- dcbikeshare %>%
+  mutate(
+    holiday = ifelse(holiday == 0, "no", "yes"),      
+    holiday = fct_relevel(holiday, "no", "yes"),    
+    workingday = ifelse(workingday == 0, "no", "yes"),
+    workingday = fct_relevel(workingday, "no", "yes")
+  )
+```
+
+```{r recode year}
+dcbikeshare <- dcbikeshare %>%
+  mutate(
+    yr = ifelse(yr == 0, "2011", "2012"),
+    yr = fct_relevel(yr, "2011", "2012")
+  )
+```
+
+```{r recode weathersit}
+dcbikeshare <- dcbikeshare %>%
+  mutate(
+    weathersit = case_when(
+      weathersit == 1 ~ "clear",
+      weathersit == 2 ~ "mist",
+      weathersit == 3 ~ "light precipitation",
+      weathersit == 4 ~ "heavy precipitation"
+    ),
+    weathersit = fct_relevel(weathersit, "clear", "mist", "light precipitation", "heavy precipitation")
+  )
+```
+
+
+```{r create new variables}
+dcbikeshare <- dcbikeshare %>%
+  mutate(
+    temperature_raw = temp * 41,
+    feeling_temperature_raw = atemp * 50,
+    humidity_raw = hum * 100,
+    windspeed_raw = windspeed * 67
+  )
+```
+
+```{r check cnt var}
+dcbikeshare %>%
+  mutate(cas_plus_reg = casual + registered) %>%
+  summarise(all_zero = all(cas_plus_reg == cnt))
+```
+
+```{r visualization}
+dcbikeshare %>%
+  ggplot(mapping = aes(x = dteday, y = cnt, color = feeling_temperature_raw)) +
+    geom_point(alpha = 0.7) +
+    labs(
+      title = "Bike rentals in DC, 2011 and 2012",
+      subtitle = "Warmer temperatures associated with more bike rentals",
+      x = "Date",
+      y = "Bike rentals",
+      color = "Temperature (C)"
+    ) +
+  theme_minimal()
+```
+
+
+```{r bike rental vs temperature}
+cnt_tmp <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ temperature_raw, data = dcbikeshare)
+cnt_tmp %>%
+  tidy()
+```
+
+```{r r^2 of model}
+glance(cnt_tmp)$r.squared
+```
+
+```{r bike rental vs feeling temperature}
+cnt_atmp <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ feeling_temperature_raw, data = dcbikeshare)
+cnt_atmp %>%
+  tidy()
+```
+
+```{r r^2}
+glance(cnt_atmp)$r.squared
+```
+
+```{r full model}
+cnt_full <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+tidy(cnt_full)
+
+```
+
+```{r full model}
+
+glance(cnt_full)$adj.r.squared
+```
+
+```{r backward season}
+rm_season <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ yr + holiday + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_season)$adj.r.squared
+```
+
+```{r backward year}
+rm_year <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + holiday + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_year)$adj.r.squared
+```
+
+```{r backward holiday}
+rm_holiday <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw, 
+      data = dcbikeshare)
+glance(rm_holiday)$adj.r.squared
+```
+
+```{r backward workingday}
+rm_workingday<- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_workingday)$adj.r.squared
+```
+
+```{r backwaed weathersit}
+rm_weathersit<- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_weathersit)$adj.r.squared
+```
+
+```{r backward temp_raw}
+rm_temp_raw<- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday + weathersit +
+        feeling_temperature_raw + humidity_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_temp_raw)$adj.r.squared
+```
+
+```{r backward feeling_temp_raw}
+rm_feeltemp_raw <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday + weathersit +
+        temperature_raw + humidity_raw +
+        windspeed_raw, 
+      data = dcbikeshare)
+glance(rm_feeltemp_raw)$adj.r.squared
+```
+
+```{r backward humidity}
+rm_humidity_raw <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw +
+        windspeed_raw + feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_humidity_raw)$adj.r.squared
+```
+
+```{r backward windspeed_raw}
+rm_windspeed_raw <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        feeling_temperature_raw * holiday, 
+      data = dcbikeshare)
+glance(rm_windspeed_raw)$adj.r.squared
+```
+
+```{r backward interaction}
+rm_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cnt ~ season + yr + holiday + workingday + weathersit +
+        temperature_raw + feeling_temperature_raw + humidity_raw +
+        windspeed_raw, 
+      data = dcbikeshare)
+glance(rm_interaction)$adj.r.squared
+```
+
