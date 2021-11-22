@@ -215,9 +215,29 @@ pre code {
 
 
 <!-- rnb-text-begin -->
+<p>Load Packages</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkodGlkeXZlcnNlKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShqYW5pdG9yKVxuYGBgIn0= -->
+<pre class="r"><code>library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Load Data</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X3NyX2RhdGEgPC0gcmVhZC5jc3YoXCJTUl9kYXRhLmNzdlwiKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgIn0= -->
+<pre class="r"><code>raw_sr_data &lt;- read.csv(&quot;SR_data.csv&quot;) %&gt;%
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByb2plY3QgUGxheWdyb3VuZCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByb2plY3QgUGxheWdyb3VuZCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KTG9hZCBQYWNrYWdlcw0KYGBge3IgTG9hZCBQYWNrYWdlc30NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoamFuaXRvcikNCmBgYA0KDQoNCkxvYWQgRGF0YQ0KYGBge3IgTG9hZCBEYXRhfQ0KcmF3X3NyX2RhdGEgPC0gcmVhZC5jc3YoIlNSX2RhdGEuY3N2IikgJT4lDQogIGNsZWFuX25hbWVzKCkNCmBgYA0KDQo=</div>
 
 
 
