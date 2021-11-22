@@ -19,3 +19,9 @@ raw_sr_data <- read.csv("SR_data.csv") %>%
   clean_names()
 ```
 
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
+```
+
