@@ -25,3 +25,14 @@ raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park == "true")
 ```
 
+Summaries
+```{r}
+count_gender <-  table(raw_adk_data['subject_gender'])
+count_gender
+count_ages <- table(raw_adk_data['subject_age'])
+count_ages
+```
+
+
+
+
