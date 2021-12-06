@@ -1,0 +1,114 @@
+---
+title: "Project Playground"
+output: html_notebook
+---
+
+
+Load Packages
+```{r Load Packages}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+```
+
+
+Load Data
+```{r Load Data}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
+```
+
+Summaries
+```{r}
+count_gender <-  table(raw_adk_data['subject_gender'])
+count_gender
+count_ages <- table(raw_adk_data['subject_age'])
+count_ages
+
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
+  geom_point()+
+  ggtitle("Subject Age vs Rangers Involved") 
+
+```
+```{r}
+model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
+summary(model)
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
+  geom_point()+
+  geom_abline(intercept = 3.142535, slope = 0.004627, col="magenta")+
+  ggtitle("Rangers to Age Regression") 
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = subject_gender, y = number_of_rangers_involved))+
+  geom_point()+
+  ggtitle("Subject Gender vs Rangers Involved") 
+
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = response_type, y = number_of_rangers_involved))+
+  geom_point()+
+  ggtitle("Subject Age vs Rangers Involved") 
+
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = incident_start_time, y = number_of_rangers_involved))+
+  geom_point()+
+  ggtitle("Subject Age vs Rangers Involved") 
+
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
+  geom_point()+
+  ggtitle("Subject Age vs Rangers Involved") 
+
+```
+```{r}
+erie_data <- raw_adk_data %>%
+  filter(location_found_longitude < -78)
+```
+
+
+```{r}
+raw_sr_data %>% 
+  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
+  geom_point()+
+  ggtitle("Subject Age vs Rangers Involved") 
+
+```
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = incident_start_date, y = incident_closed_date))+
+  geom_point()+
+  ggtitle("Subject Age vs Rangers Involved") 
+```
+```{r}
+confusingtimes_data <- raw_adk_data %>%
+  filter(incident_start_date > incident_closed_date)
+```
+
+mo=36years
+m1=/=36years
+```{r}
+averageage <- mean(raw_adk_data$subject_age, na.rm = "TRUE")
+cat("Average Age: ", averageage)
+ageSD <- sd(raw_adk_data$subject_age, na.rm = "TRUE")
+cat("Standard Deviation:", ageSD)
+```
+
