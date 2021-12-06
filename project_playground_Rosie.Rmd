@@ -1,0 +1,81 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+Load Packages
+```{r Load Packages}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(tidymodels)
+library(httr)
+library(jsonlite)
+library(sf)
+library(tmap)
+```
+
+
+Load Data
+```{r Load Data}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
+```
+
+
+```{r}
+female <- raw_adk_data %>%
+  filter(subject_gender == "F")
+
+male <- raw_adk_data %>%
+  filter(subject_gender == "M")
+
+h1 <- t.test(female$subject_age, male$subject_age, alternative = "two.sided", var.equal = FALSE)
+h1
+
+```
+
+
+
+```{r}
+# Null hypothesis: mu f - mu m = 0
+# Alternative: mu f - mu m > 0
+
+female <- raw_adk_data %>%
+  filter(subject_gender == "F")
+
+male <- raw_adk_data %>%
+  filter(subject_gender == "M")
+
+h2 <- t.test(female$subject_age, male$subject_age, alternative = "less", var.equal = FALSE)
+h2
+
+# Because p is less than alpha, we reject the null hypothesis. We have reason to believe that the true difference of means is less than 0
+
+```
+
+
+
+```{r}
+# Does the mean age of people who need rescue in adk differ from those not in the adk
+
+not_adk <- raw_sr_data %>%
+  filter(incident_adirondack_park == "false")
+
+h3 <- t.test(not_adk$subject_age, raw_adk_data$subject_age, alternative = "two.sided", var.equal = FALSE)
+h3
+
+# Because p > alpha, we fail to reject the null hypothesis. We do not have reason to believe that the the mean age of adk differs from others
+
+```
+
