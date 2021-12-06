@@ -1,0 +1,90 @@
+---
+title: "Project Playground"
+output: html_notebook
+---
+
+
+Load Packages
+```{r Load Packages}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(tidymodels)
+library(httr)
+library(jsonlite)
+library(sf)
+library(tmap)
+```
+
+
+Load Data
+```{r Load Data}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
+```
+Not ADK
+```{r}
+raw_not_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "false")
+```
+
+How many single people needed rescue
+```{r}
+each_incident_num <- table(raw_adk_data$incident_number) %>%
+  as.data.frame() %>%
+  filter(Freq == 1 )
+```
+
+
+Counts
+```{r}
+count_gender <-  table(raw_adk_data['subject_gender'])
+View(count_gender)
+count_ages <- table(raw_adk_data['subject_age'])
+View(count_ages)
+count_rangers <- table(raw_adk_data['number_of_rangers_involved'])
+View(count_rangers)
+count_elevation <- table(raw_adk_data['location_found_elevation'])
+View(count_elevation)
+```
+
+
+```{r}
+mean(raw_adk_data$subject_age, na.rm = TRUE)
+mean(raw_not_adk_data$subject_age, na.rm = TRUE)
+```
+
+
+Preliminary Plotting
+```{r}
+plot_relevant <- raw_adk_data %>%
+  ggplot(aes(subject_age,location_found_elevation)) + geom_point()
+```
+
+
+
+MAPS!
+
+ADK Region
+```{r}
+adk_geom <- st_read("apaLandClass/apaLandClass202111.shp") %>%
+plot() 
+```
+
+
+Relevant Data
+```{r}
+adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
+  select(location_found_latitude,location_found_longitude) %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
+
+```
+
