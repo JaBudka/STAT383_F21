@@ -218,149 +218,224 @@ pre code {
 <p>Load Packages</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkodGlkeXZlcnNlKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShqYW5pdG9yKVxuYGBgIn0= -->
-<pre class="r"><code>library(dplyr)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkodGlkeXZlcnNlKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShqYW5pdG9yKVxuYGBgXG5gYGAifQ== -->
+<pre class="r"><code>```r
+library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(janitor)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Load Data</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X3NyX2RhdGEgPC0gcmVhZC5jc3YoXCJTUl9kYXRhLmNzdlwiKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgIn0= -->
-<pre class="r"><code>raw_sr_data &lt;- read.csv(&quot;SR_data.csv&quot;) %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+Load Data
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucmF3X3NyX2RhdGEgPC0gcmVhZC5jc3YoXFxTUl9kYXRhLmNzdlxcKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+raw_sr_data &lt;- read.csv(\SR_data.csv\) %&gt;%
   clean_names()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Just ADK</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhIDwtIHJhd19zcl9kYXRhICU+JVxuICBmaWx0ZXIoaW5jaWRlbnRfYWRpcm9uZGFja19wYXJrID09IFwidHJ1ZVwiKVxuYGBgIn0= -->
-<pre class="r"><code>raw_adk_data &lt;- raw_sr_data %&gt;%
-  filter(incident_adirondack_park == &quot;true&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Summaries</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY291bnRfZ2VuZGVyIDwtICB0YWJsZShyYXdfYWRrX2RhdGFbJ3N1YmplY3RfZ2VuZGVyJ10pXG5jb3VudF9nZW5kZXJcbmNvdW50X2FnZXMgPC0gdGFibGUocmF3X2Fka19kYXRhWydzdWJqZWN0X2FnZSddKVxuY291bnRfYWdlc1xuXG5gYGAifQ== -->
-<pre class="r"><code>count_gender &lt;-  table(raw_adk_data[&#39;subject_gender&#39;])
-count_gender
-count_ages &lt;- table(raw_adk_data[&#39;subject_age&#39;])
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Just ADK
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucmF3X2Fka19kYXRhIDwtIHJhd19zcl9kYXRhICU+JVxuICBmaWx0ZXIoaW5jaWRlbnRfYWRpcm9uZGFja19wYXJrID09IFxcdHJ1ZVxcKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+raw_adk_data &lt;- raw_sr_data %&gt;%
+  filter(incident_adirondack_park == \true\)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Summaries
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuY291bnRfYWdlc1xuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
 count_ages
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gc3ViamVjdF9hZ2UsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpK1xuICBnZW9tX3BvaW50KCkrXG4gIGdndGl0bGUoXCJTdWJqZWN0IEFnZSB2cyBSYW5nZXJzIEludm9sdmVkXCIpIFxuXG5gYGAifQ== -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
-  geom_point()+
-  ggtitle(&quot;Subject Age vs Rangers Involved&quot;) 
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiXG4gMCAgMiAgNCAgNSAgNiAgNyAgOCAgOSAxMCAxMSAxMiAxMyAxNCAxNSAxNiAxNyAxOCAxOSAyMCAyMSAyMiAyMyAyNCAyNSAyNiAyNyAyOCAyOSAzMCAzMSAzMiAzMyAzNCAzNSAzNiAzNyAzOCAzOSBcbiAyICAyICAzICA3ICAzICA2ICA5IDEwIDE1IDE3IDIwIDE4IDI3IDM3IDI4IDM5IDcxIDU0IDY0IDY4IDYwIDYwIDQ1IDQ0IDUwIDQxIDQ4IDQwIDQzIDMxIDI4IDIwIDI0IDIzIDI2IDE4IDI0IDIwIFxuNDAgNDEgNDIgNDMgNDQgNDUgNDYgNDcgNDggNDkgNTAgNTEgNTIgNTMgNTQgNTUgNTYgNTcgNTggNTkgNjAgNjEgNjIgNjMgNjQgNjUgNjYgNjcgNjggNjkgNzAgNzEgNzIgNzMgNzQgNzUgNzYgNzcgXG4xOSAxNyAyMSAxNCAxNCAzMCAzMSAxNSAzMyAzMiA0MiAzOSA0NSAzMiAyOSAyOSAzNyAyOSAyMCAyNyAxOCAzMCAyMSAxOSAzMSAxNCAyMyAxOCAxNCAgOCAxMSAxMyAxNCAxNCAgNSAxMSAgNSAgMyBcbjc4IDc5IDgwIDgxIDgyIDgzIDg0IDg1IDg2IDg3IDg4IFxuIDYgIDYgIDUgIDUgIDUgIDEgIDIgIDMgIDEgIDEgIDEgXG4ifQ== --&gt;
+</code></pre>
+<p>0 2 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 2 2 3 7 3 6 9 10 15 17 20 18 27 37 28 39 71 54 64 68 60 60 45 44 50 41 48 40 43 31 28 20 24 23 26 18 24 20 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 19 17 21 14 14 30 31 15 33 32 42 39 45 32 29 29 37 29 20 27 18 30 21 19 31 14 23 18 14 8 11 13 14 14 5 11 5 3 78 79 80 81 82 83 84 85 86 87 88 6 6 5 5 5 1 2 3 1 1 1</p>
+<pre><code>
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+mo=36years
+m1=/=36years
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWdlTiA8LSBsZW5ndGgocmF3X2Fka19kYXRhJHN1YmplY3RfYWdlKVxuYWdlTlxuXG5gYGAifQ== --&gt;
+
+```r
+ageN &lt;- length(raw_adk_data$subject_age)
+ageN
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9kZWwgPSBsbShudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCB+IHN1YmplY3RfYWdlLCBkYXRhID0gcmF3X2Fka19kYXRhKVxuc3VtbWFyeShtb2RlbClcbmBgYCJ9 -->
-<pre class="r"><code>model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
-summary(model)</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIwNzhcbiJ9 -->
+<pre><code>[1] 2078</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWdlbiA8LSBsZW5ndGgoc2RldmNhbGMpXG5hZ2VuXG5gYGAifQ== -->
+<pre class="r"><code>agen &lt;- length(sdevcalc)
+agen</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gc3ViamVjdF9hZ2UsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpK1xuICBnZW9tX3BvaW50KCkrXG4gIGdlb21fYWJsaW5lKGludGVyY2VwdCA9IDMuMTQyNTM1LCBzbG9wZSA9IDAuMDA0NjI3LCBjb2w9XCJtYWdlbnRhXCIpK1xuICBnZ3RpdGxlKFwiUmFuZ2VycyB0byBBZ2UgUmVncmVzc2lvblwiKSBcbmBgYCJ9 -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
-  geom_point()+
-  geom_abline(intercept = 3.142535, slope = 0.004627, col=&quot;magenta&quot;)+
-  ggtitle(&quot;Rangers to Age Regression&quot;) </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gc3ViamVjdF9nZW5kZXIsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpK1xuICBnZW9tX3BvaW50KCkrXG4gIGdndGl0bGUoXCJTdWJqZWN0IEdlbmRlciB2cyBSYW5nZXJzIEludm9sdmVkXCIpIFxuXG5gYGAifQ== -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = subject_gender, y = number_of_rangers_involved))+
-  geom_point()+
-  ggtitle(&quot;Subject Gender vs Rangers Involved&quot;) 
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gcmVzcG9uc2VfdHlwZSwgeSA9IG51bWJlcl9vZl9yYW5nZXJzX2ludm9sdmVkKSkrXG4gIGdlb21fcG9pbnQoKStcbiAgZ2d0aXRsZShcIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWRcIikgXG5cbmBgYCJ9 -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = response_type, y = number_of_rangers_involved))+
-  geom_point()+
-  ggtitle(&quot;Subject Age vs Rangers Involved&quot;) 
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gaW5jaWRlbnRfc3RhcnRfdGltZSwgeSA9IG51bWJlcl9vZl9yYW5nZXJzX2ludm9sdmVkKSkrXG4gIGdlb21fcG9pbnQoKStcbiAgZ2d0aXRsZShcIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWRcIikgXG5cbmBgYCJ9 -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = incident_start_time, y = number_of_rangers_involved))+
-  geom_point()+
-  ggtitle(&quot;Subject Age vs Rangers Involved&quot;) 
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gbG9jYXRpb25fZm91bmRfbG9uZ2l0dWRlLCB5ID0gbG9jYXRpb25fZm91bmRfbGF0aXR1ZGUpKStcbiAgZ2VvbV9wb2ludCgpK1xuICBnZ3RpdGxlKFwiU3ViamVjdCBBZ2UgdnMgUmFuZ2VycyBJbnZvbHZlZFwiKSBcblxuYGBgIn0= -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
-  geom_point()+
-  ggtitle(&quot;Subject Age vs Rangers Involved&quot;) 
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZXJpZV9kYXRhIDwtIHJhd19hZGtfZGF0YSAlPiVcbiAgZmlsdGVyKGxvY2F0aW9uX2ZvdW5kX2xvbmdpdHVkZSA8IC03OClcbmBgYCJ9 -->
-<pre class="r"><code>erie_data &lt;- raw_adk_data %&gt;%
-  filter(location_found_longitude &lt; -78)</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDMxXG4ifQ== -->
+<pre><code>[1] 31</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X3NyX2RhdGEgJT4lIFxuICBnZ3Bsb3QoYWVzKHggPSBsb2NhdGlvbl9mb3VuZF9sb25naXR1ZGUsIHkgPSBsb2NhdGlvbl9mb3VuZF9sYXRpdHVkZSkpK1xuICBnZW9tX3BvaW50KCkrXG4gIGdndGl0bGUoXCJTdWJqZWN0IEFnZSB2cyBSYW5nZXJzIEludm9sdmVkXCIpIFxuXG5gYGAifQ== -->
-<pre class="r"><code>raw_sr_data %&gt;% 
-  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
-  geom_point()+
-  ggtitle(&quot;Subject Age vs Rangers Involved&quot;) 
-</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2Fka19kYXRhICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0gaW5jaWRlbnRfc3RhcnRfZGF0ZSwgeSA9IGluY2lkZW50X2Nsb3NlZF9kYXRlKSkrXG4gIGdlb21fcG9pbnQoKStcbiAgZ2d0aXRsZShcIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWRcIikgXG5gYGAifQ== -->
-<pre class="r"><code>raw_adk_data %&gt;% 
-  ggplot(aes(x = incident_start_date, y = incident_closed_date))+
-  geom_point()+
-  ggtitle(&quot;Subject Age vs Rangers Involved&quot;) </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29uZnVzaW5ndGltZXNfZGF0YSA8LSByYXdfYWRrX2RhdGEgJT4lXG4gIGZpbHRlcihpbmNpZGVudF9zdGFydF9kYXRlID4gaW5jaWRlbnRfY2xvc2VkX2RhdGUpXG5gYGAifQ== -->
-<pre class="r"><code>confusingtimes_data &lt;- raw_adk_data %&gt;%
-  filter(incident_start_date &gt; incident_closed_date)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>mo=36years m1=/=36years</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXZlcmFnZWFnZSA8LSBtZWFuKHJhd19hZGtfZGF0YSRzdWJqZWN0X2FnZSwgbmEucm0gPSBcIlRSVUVcIilcbmNhdChcIkF2ZXJhZ2UgQWdlOiBcIiwgYXZlcmFnZWFnZSlcbmFnZVNEIDwtIHNkKHJhd19hZGtfZGF0YSRzdWJqZWN0X2FnZSwgbmEucm0gPSBcIlRSVUVcIilcbmNhdChcIlN0YW5kYXJkIERldmlhdGlvbjpcIiwgYWdlU0QpXG5gYGAifQ== -->
-<pre class="r"><code>averageage &lt;- mean(raw_adk_data$subject_age, na.rm = &quot;TRUE&quot;)
-cat(&quot;Average Age: &quot;, averageage)
-ageSD &lt;- sd(raw_adk_data$subject_age, na.rm = &quot;TRUE&quot;)
-cat(&quot;Standard Deviation:&quot;, ageSD)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWFjaF9pbmNpZGVudF9udW0gPC0gdGFibGUocmF3X2Fka19kYXRhJGluY2lkZW50X251bWJlcikgJT4lXG4gIGFzLmRhdGEuZnJhbWUoKSAlPiVcbiAgZmlsdGVyKEZyZXEgPT0gMSApXG5gYGAifQ== -->
+<pre class="r"><code>each_incident_num &lt;- table(raw_adk_data$incident_number) %&gt;%
+  as.data.frame() %&gt;%
+  filter(Freq == 1 )</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByb2plY3QgUGxheWdyb3VuZCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KTG9hZCBQYWNrYWdlcw0KYGBge3IgTG9hZCBQYWNrYWdlc30NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoamFuaXRvcikNCmBgYA0KDQoNCkxvYWQgRGF0YQ0KYGBge3IgTG9hZCBEYXRhfQ0KcmF3X3NyX2RhdGEgPC0gcmVhZC5jc3YoIlNSX2RhdGEuY3N2IikgJT4lDQogIGNsZWFuX25hbWVzKCkNCmBgYA0KDQpKdXN0IEFESw0KYGBge3J9DQpyYXdfYWRrX2RhdGEgPC0gcmF3X3NyX2RhdGEgJT4lDQogIGZpbHRlcihpbmNpZGVudF9hZGlyb25kYWNrX3BhcmsgPT0gInRydWUiKQ0KYGBgDQoNClN1bW1hcmllcw0KYGBge3J9DQpjb3VudF9nZW5kZXIgPC0gIHRhYmxlKHJhd19hZGtfZGF0YVsnc3ViamVjdF9nZW5kZXInXSkNCmNvdW50X2dlbmRlcg0KY291bnRfYWdlcyA8LSB0YWJsZShyYXdfYWRrX2RhdGFbJ3N1YmplY3RfYWdlJ10pDQpjb3VudF9hZ2VzDQoNCmBgYA0KYGBge3J9DQpyYXdfYWRrX2RhdGEgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBzdWJqZWN0X2FnZSwgeSA9IG51bWJlcl9vZl9yYW5nZXJzX2ludm9sdmVkKSkrDQogIGdlb21fcG9pbnQoKSsNCiAgZ2d0aXRsZSgiU3ViamVjdCBBZ2UgdnMgUmFuZ2VycyBJbnZvbHZlZCIpIA0KDQpgYGANCmBgYHtyfQ0KbW9kZWwgPSBsbShudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCB+IHN1YmplY3RfYWdlLCBkYXRhID0gcmF3X2Fka19kYXRhKQ0Kc3VtbWFyeShtb2RlbCkNCmBgYA0KYGBge3J9DQpyYXdfYWRrX2RhdGEgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBzdWJqZWN0X2FnZSwgeSA9IG51bWJlcl9vZl9yYW5nZXJzX2ludm9sdmVkKSkrDQogIGdlb21fcG9pbnQoKSsNCiAgZ2VvbV9hYmxpbmUoaW50ZXJjZXB0ID0gMy4xNDI1MzUsIHNsb3BlID0gMC4wMDQ2MjcsIGNvbD0ibWFnZW50YSIpKw0KICBnZ3RpdGxlKCJSYW5nZXJzIHRvIEFnZSBSZWdyZXNzaW9uIikgDQpgYGANCmBgYHtyfQ0KcmF3X2Fka19kYXRhICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gc3ViamVjdF9nZW5kZXIsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgR2VuZGVyIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IHJlc3BvbnNlX3R5cGUsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGluY2lkZW50X3N0YXJ0X3RpbWUsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGxvY2F0aW9uX2ZvdW5kX2xvbmdpdHVkZSwgeSA9IGxvY2F0aW9uX2ZvdW5kX2xhdGl0dWRlKSkrDQogIGdlb21fcG9pbnQoKSsNCiAgZ2d0aXRsZSgiU3ViamVjdCBBZ2UgdnMgUmFuZ2VycyBJbnZvbHZlZCIpIA0KDQpgYGANCmBgYHtyfQ0KZXJpZV9kYXRhIDwtIHJhd19hZGtfZGF0YSAlPiUNCiAgZmlsdGVyKGxvY2F0aW9uX2ZvdW5kX2xvbmdpdHVkZSA8IC03OCkNCmBgYA0KDQoNCmBgYHtyfQ0KcmF3X3NyX2RhdGEgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBsb2NhdGlvbl9mb3VuZF9sb25naXR1ZGUsIHkgPSBsb2NhdGlvbl9mb3VuZF9sYXRpdHVkZSkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGluY2lkZW50X3N0YXJ0X2RhdGUsIHkgPSBpbmNpZGVudF9jbG9zZWRfZGF0ZSkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCmBgYA0KYGBge3J9DQpjb25mdXNpbmd0aW1lc19kYXRhIDwtIHJhd19hZGtfZGF0YSAlPiUNCiAgZmlsdGVyKGluY2lkZW50X3N0YXJ0X2RhdGUgPiBpbmNpZGVudF9jbG9zZWRfZGF0ZSkNCmBgYA0KDQptbz0zNnllYXJzDQptMT0vPTM2eWVhcnMNCmBgYHtyfQ0KYXZlcmFnZWFnZSA8LSBtZWFuKHJhd19hZGtfZGF0YSRzdWJqZWN0X2FnZSwgbmEucm0gPSAiVFJVRSIpDQpjYXQoIkF2ZXJhZ2UgQWdlOiAiLCBhdmVyYWdlYWdlKQ0KYWdlU0QgPC0gc2QocmF3X2Fka19kYXRhJHN1YmplY3RfYWdlLCBuYS5ybSA9ICJUUlVFIikNCmNhdCgiU3RhbmRhcmQgRGV2aWF0aW9uOiIsIGFnZVNEKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByb2plY3QgUGxheWdyb3VuZCINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCg0KTG9hZCBQYWNrYWdlcw0KYGBge3IgTG9hZCBQYWNrYWdlc30NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoamFuaXRvcikNCmBgYA0KDQoNCkxvYWQgRGF0YQ0KYGBge3IgTG9hZCBEYXRhfQ0KcmF3X3NyX2RhdGEgPC0gcmVhZC5jc3YoIlNSX2RhdGEuY3N2IikgJT4lDQogIGNsZWFuX25hbWVzKCkNCmBgYA0KDQpKdXN0IEFESw0KYGBge3J9DQpyYXdfYWRrX2RhdGEgPC0gcmF3X3NyX2RhdGEgJT4lDQogIGZpbHRlcihpbmNpZGVudF9hZGlyb25kYWNrX3BhcmsgPT0gInRydWUiKQ0KYGBgDQoNClN1bW1hcmllcw0KYGBge3J9DQpjb3VudF9nZW5kZXIgPC0gIHRhYmxlKHJhd19hZGtfZGF0YVsnc3ViamVjdF9nZW5kZXInXSkNCmNvdW50X2dlbmRlcg0KY291bnRfYWdlcyA8LSB0YWJsZShyYXdfYWRrX2RhdGFbJ3N1YmplY3RfYWdlJ10pDQpjb3VudF9hZ2VzDQoNCmBgYA0KYGBge3J9DQpyYXdfYWRrX2RhdGEgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBzdWJqZWN0X2FnZSwgeSA9IG51bWJlcl9vZl9yYW5nZXJzX2ludm9sdmVkKSkrDQogIGdlb21fcG9pbnQoKSsNCiAgZ2d0aXRsZSgiU3ViamVjdCBBZ2UgdnMgUmFuZ2VycyBJbnZvbHZlZCIpIA0KDQpgYGANCmBgYHtyfQ0KbW9kZWwgPSBsbShudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCB+IHN1YmplY3RfYWdlLCBkYXRhID0gcmF3X2Fka19kYXRhKQ0Kc3VtbWFyeShtb2RlbCkNCmBgYA0KYGBge3J9DQpyYXdfYWRrX2RhdGEgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBzdWJqZWN0X2FnZSwgeSA9IG51bWJlcl9vZl9yYW5nZXJzX2ludm9sdmVkKSkrDQogIGdlb21fcG9pbnQoKSsNCiAgZ2VvbV9hYmxpbmUoaW50ZXJjZXB0ID0gMy4xNDI1MzUsIHNsb3BlID0gMC4wMDQ2MjcsIGNvbD0ibWFnZW50YSIpKw0KICBnZ3RpdGxlKCJSYW5nZXJzIHRvIEFnZSBSZWdyZXNzaW9uIikgDQpgYGANCmBgYHtyfQ0KcmF3X2Fka19kYXRhICU+JSANCiAgZ2dwbG90KGFlcyh4ID0gc3ViamVjdF9nZW5kZXIsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgR2VuZGVyIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IHJlc3BvbnNlX3R5cGUsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGluY2lkZW50X3N0YXJ0X3RpbWUsIHkgPSBudW1iZXJfb2ZfcmFuZ2Vyc19pbnZvbHZlZCkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGxvY2F0aW9uX2ZvdW5kX2xvbmdpdHVkZSwgeSA9IGxvY2F0aW9uX2ZvdW5kX2xhdGl0dWRlKSkrDQogIGdlb21fcG9pbnQoKSsNCiAgZ2d0aXRsZSgiU3ViamVjdCBBZ2UgdnMgUmFuZ2VycyBJbnZvbHZlZCIpIA0KDQpgYGANCmBgYHtyfQ0KZXJpZV9kYXRhIDwtIHJhd19hZGtfZGF0YSAlPiUNCiAgZmlsdGVyKGxvY2F0aW9uX2ZvdW5kX2xvbmdpdHVkZSA8IC03OCkNCmBgYA0KDQoNCmBgYHtyfQ0KcmF3X3NyX2RhdGEgJT4lIA0KICBnZ3Bsb3QoYWVzKHggPSBsb2NhdGlvbl9mb3VuZF9sb25naXR1ZGUsIHkgPSBsb2NhdGlvbl9mb3VuZF9sYXRpdHVkZSkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCg0KYGBgDQpgYGB7cn0NCnJhd19hZGtfZGF0YSAlPiUgDQogIGdncGxvdChhZXMoeCA9IGluY2lkZW50X3N0YXJ0X2RhdGUsIHkgPSBpbmNpZGVudF9jbG9zZWRfZGF0ZSkpKw0KICBnZW9tX3BvaW50KCkrDQogIGdndGl0bGUoIlN1YmplY3QgQWdlIHZzIFJhbmdlcnMgSW52b2x2ZWQiKSANCmBgYA0KYGBge3J9DQpjb25mdXNpbmd0aW1lc19kYXRhIDwtIHJhd19hZGtfZGF0YSAlPiUNCiAgZmlsdGVyKGluY2lkZW50X3N0YXJ0X2RhdGUgPiBpbmNpZGVudF9jbG9zZWRfZGF0ZSkNCmBgYA0KDQptbz0zNnllYXJzDQptMT0vPTM2eWVhcnMNCmBgYHtyfQ0KYXZlcmFnZWFnZSA8LSBtZWFuKHJhd19hZGtfZGF0YSRzdWJqZWN0X2FnZSwgbmEucm0gPSAiVFJVRSIpDQpjYXQoIkF2ZXJhZ2UgQWdlOiAiLCBhdmVyYWdlYWdlKQ0KYWdlU0QgPC0gc2QocmF3X2Fka19kYXRhJHN1YmplY3RfYWdlLCBuYS5ybSA9ICJUUlVFIikNCmNhdCgiDQpTdGFuZGFyZCBEZXZpYXRpb246IiwgYWdlU0QpDQoNCmFnZU4gPC0gbGVuZ3RoKHJhd19hZGtfZGF0YSRzdWJqZWN0X2FnZSkNCmFnZU4NCg0KYGBgDQoNCmBgYHtyfQ0KZWFjaF9pbmNpZGVudF9udW0gPC0gdGFibGUocmF3X2Fka19kYXRhJGluY2lkZW50X251bWJlcikgJT4lDQogIGFzLmRhdGEuZnJhbWUoKSAlPiUNCiAgZmlsdGVyKEZyZXEgPT0gMSApDQpTaW5nbGVzQXZlcmFnZSA8LSBtZWFuKHJhd19hZGtfZGF0YSRzdWJqZWN0X2FnZSwgbmEucm0gPSAiVFJVRSIpDQpjYXQoIkF2ZXJhZ2UgQWdlOiAiLCBhdmVyYWdlYWdlKQ0KYGBgDQoNCg==</div>
 
 
 

@@ -109,6 +109,19 @@ m1=/=36years
 averageage <- mean(raw_adk_data$subject_age, na.rm = "TRUE")
 cat("Average Age: ", averageage)
 ageSD <- sd(raw_adk_data$subject_age, na.rm = "TRUE")
-cat("Standard Deviation:", ageSD)
+cat("
+Standard Deviation:", ageSD)
+
+ageN <- length(raw_adk_data$subject_age)
+ageN
+
+```
+
+```{r}
+each_incident_num <- table(raw_adk_data$incident_number) %>%
+  as.data.frame() %>%
+  filter(Freq == 1 )
+SinglesAverage <- mean(raw_adk_data$subject_age, na.rm = "TRUE")
+cat("Average Age: ", averageage)
 ```
 
