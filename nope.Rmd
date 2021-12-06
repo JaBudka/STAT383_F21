@@ -1,0 +1,25 @@
+---
+title: "Title"
+author: "Jackie Budka, Rosie Delwiche, Kristina Franklin, Connor Hathaway"
+output: 
+  html_notebook:
+    number_sections: true
+---
+
+# Introduction
+...
+
+
+# Background
+...
+
+
+# Methods and Results
+...
+
+
+# Conclusions
+...
+
+
+# References {-}
