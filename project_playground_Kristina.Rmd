@@ -1,0 +1,62 @@
+---
+title: "Project Playground"
+output: html_notebook
+---
+
+
+Load Packages
+```{r Load Packages}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+```
+
+
+Load Data
+```{r Load Data}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
+```
+
+Summaries
+```{r}
+count_gender <-  table(raw_adk_data['subject_gender'])
+count_gender
+count_ages <- table(raw_adk_data['subject_age'])
+count_ages
+
+```
+
+
+```{r}
+count_rtype <- table(raw_adk_data['response_type'])
+count_rtype
+count_activity <- table(raw_adk_data['activity'])
+count_activity
+
+
+```
+
+```{r}
+raw_adk_data %>%
+  rescue <- filter(response_type == 'Rescue')
+  ggplot(aes(x = activity, y = rescue)+
+  geom_point()+
+  ggtitle("activity vs. rescue"))
+
+model = lm(response_type ~ activity, data = raw_adk_data)
+summary(model)
+
+raw_adk_data %>% 
+  ggplot(aes(x = activity, y = response_type)) +
+  geom_point() +
+#%geom_abline(intercept = 0.005086, slope = 0.876286, col="magenta")+
+  #ggtitle("Formaldehyde data and the regression line")
+```
