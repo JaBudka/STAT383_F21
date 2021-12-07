@@ -22,7 +22,8 @@ raw_sr_data <- read.csv("SR_data.csv") %>%
 Just ADK
 ```{r}
 raw_adk_data <- raw_sr_data %>%
-  filter(incident_adirondack_park == "true")
+  filter(incident_adirondack_park=="true")
+
 ```
 
 Summaries
@@ -31,7 +32,14 @@ count_gender <-  table(raw_adk_data['subject_gender'])
 count_gender
 count_ages <- table(raw_adk_data['subject_age'])
 count_ages
-
+averageage <- mean(raw_adk_data$subject_age, na.rm = "TRUE")
+cat('Mean Age from data set (Xbar) =',averageage)
+ageSD <- sd(raw_adk_data$subject_age, na.rm = "TRUE")
+cat('
+    Standard Deviation (S) =', ageSD)
+ageLEN <- length(raw_adk_data$subject_age)
+cat('
+    Number of data points (n)=', ageLEN)  
 ```
 ```{r}
 raw_adk_data %>% 
@@ -106,22 +114,6 @@ confusingtimes_data <- raw_adk_data %>%
 mo=36years
 m1=/=36years
 ```{r}
-averageage <- mean(raw_adk_data$subject_age, na.rm = "TRUE")
-cat("Average Age: ", averageage)
-ageSD <- sd(raw_adk_data$subject_age, na.rm = "TRUE")
-cat("
-Standard Deviation:", ageSD)
-
-ageN <- length(raw_adk_data$subject_age)
-ageN
-
-```
-
-```{r}
-each_incident_num <- table(raw_adk_data$incident_number) %>%
-  as.data.frame() %>%
-  filter(Freq == 1 )
-SinglesAverage <- mean(raw_adk_data$subject_age, na.rm = "TRUE")
-cat("Average Age: ", averageage)
+mean(raw_adk_data$subject_age, na.rm = "TRUE")
 ```
 
