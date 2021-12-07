@@ -25,3 +25,38 @@ raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park=="true")
 
 ```
+
+```{r}
+search_data <- raw_adk_data %>%
+  filter(response_type=="Search")
+rescue_data <- raw_adk_data %>%
+  filter(response_type=="Rescue")
+recovery_data <- raw_adk_data %>%
+  filter(response_type=="Recovery")
+```
+```{r}
+plot(density(search_data$subject_age, na.rm = "TRUE"))
+plot(density(rescue_data$subject_age, na.rm = "TRUE"))
+plot(density(recovery_data$subject_age, na.rm = "TRUE"))
+```
+
+```{r}
+raw_adk_data %>%
+  ggplot(aes(y = subject_age, x = response_type)) +
+  geom_boxplot()+
+  ggtitle("Subject Age vs Response Type") 
+```
+```{r}
+MArecovery <- mean(recovery_data$subject_age, na.rm = "TRUE")
+MArescue <- mean(rescue_data$subject_age, na.rm = "TRUE")
+MAsearch <- mean(search_data$subject_age, na.rm = "TRUE")
+cat('Mean ages
+Recovery= ',MArecovery)
+cat('
+Rescue= ',MArescue)
+cat('
+Search= ',MAsearch)
+```
+
+
+
