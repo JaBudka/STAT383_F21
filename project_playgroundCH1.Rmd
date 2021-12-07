@@ -1,0 +1,27 @@
+---
+title: "Project Playground"
+output: html_notebook
+---
+
+
+Load Packages
+```{r Load Packages}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+```
+
+
+Load Data
+```{r Load Data}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park=="true")
+
+```
