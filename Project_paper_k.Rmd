@@ -48,6 +48,8 @@ raw_adk_data %>%
 
 The data has many different variables and presented to us in a large confusing table.  The following code sorts the variables we are interested in, and creates a small table for each one.
 
+As you can see, there is more chainsaw then flood victims.
+
 ```{r}
 count_gender <-  table(raw_adk_data['subject_gender'])
 count_gender
@@ -70,6 +72,12 @@ raw_adk_data %>%
   ggtitle("Subject Age vs Response Type") 
 ```
 ```{r}
+search_data <- raw_adk_data %>%
+  filter(response_type=="Search")
+rescue_data <- raw_adk_data %>%
+  filter(response_type=="Rescue")
+recovery_data <- raw_adk_data %>%
+  filter(response_type=="Recovery")
 MArecovery <- mean(recovery_data$subject_age, na.rm = "TRUE")
 MArescue <- mean(rescue_data$subject_age, na.rm = "TRUE")
 MAsearch <- mean(search_data$subject_age, na.rm = "TRUE")
@@ -132,6 +140,11 @@ h2
 
 Check the various assumptions of for statistical tests.
 
+```{r}
+model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
+summary(model)
+plot(model)
+```
 
 
 For the linear regression analysis, interpret coefficients and/or make relevant predictions and
