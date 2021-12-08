@@ -97,5 +97,48 @@ Overdue= ',MAoverdue)
 cat('
 Stranded= ',MAstranded)
 ```
+```{r}
+recovery_illness_data <- illness_data %>%
+  filter(situation=="Recovery")
+rescue_illness_data <- illness_data %>%
+  filter(situation=="Rescue")
+search_illness_data <- illness_data %>%
+  filter(situation=="Search")
+  
+recovery_injured_data <- injured_data %>%
+  filter(situation=="Recovery")
+rescue_injured_data <- injured_data %>%
+  filter(situation=="Rescue")
+search_injured_data <- injured_data %>%
+  filter(situation=="Search")
+  
+recovery_lost_data <- lost_data %>%
+  filter(situation=="Recovery")
+rescue_lost_data <- lost_data %>%
+  filter(situation=="Rescue")
+search_lost_data <- lost_data %>%
+  filter(situation=="Search")
+  
+recovery_missing_data <- missing_data %>%
+  filter(situation=="Recovery")
+rescue_missing_data <- missing_data %>%
+  filter(situation=="Rescue")
+search_missing_data <- missing_data %>%
+  filter(situation=="Search")
+  
+recovery_overdue_data <- overdue_data %>%
+  filter(situation=="Recovery")
+rescue_overdue_data <- overdue_data %>%
+  filter(situation=="Rescue")
+search_overdue_data <- overdue_data %>%
+  filter(situation=="Search")
+  
+recovery_stranded_data <- stranded_data %>%
+  filter(situation=="Recovery")
+rescue_stranded_data <- stranded_data %>%
+  filter(situation=="Rescue")
+search_stranded_data <- stranded_data %>%
+  filter(situation=="Search")
 
+```
 
