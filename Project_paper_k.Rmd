@@ -1,0 +1,148 @@
+---
+title: "Search and Rescues on the Adirondacks"
+author: "Kristina Franklin, Rosie Delwiche, Connor Hathaway, Jackie Budka"
+output: 
+  html_notebook:
+    number_sections: true
+---
+
+# Introduction
+
+The observed data is concerning the amount of rescues within New York State.  Specifically, the rescues within the Adirondack mountains will be considered. The concerned variables are amount of rangers, amount of people being rescued, age and gender of rescued, and the type of activity that caused the accident.  This data is interesting because it can be used to find if certain groups of people should be getting extra safety training before entering the Adirondack Forest.
+
+...
+
+
+# Background
+
+
+
+
+The data set came from Data World, which got the original data from the New York State Government.  The data is an observational study being completed by the search and rescue rangers.
+
+
+
+by analyzing this data, we hope to find correlations between the types of rescues performed, and who was being rescued, in the Adirondacks.  This will help decide if different people should have more, less, or different safety training before adventuring on their own.
+
+
+...
+
+
+# Methods and Results
+
+Summarize data. Use both numerical and graphical summaries.
+
+
+The two plots below are created from location of the rescues within New York State.  Looking at the plot of the entire state, there are two regions where rescues occur more frequently, the high peaks being the larger area of concentration.  Because of this concentration, a second plot was made to focus on the rescues within the Adirondack mountains. 
+```{r}
+
+raw_sr_data %>% 
+  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
+  geom_point()+
+  ggtitle("Location Found Latitude vs Longitude") 
+
+raw_adk_data %>% 
+  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
+  geom_point()+
+  ggtitle("Location Found Latitude vs Longitude (Just ADK)") 
+
+```
+
+The data has many different variables and presented to us in a large confusing table.  The following code sorts the variables we are interested in, and creates a small table for each one.
+
+```{r}
+count_gender <-  table(raw_adk_data['subject_gender'])
+count_gender
+count_rtype <- table(raw_adk_data['response_type'])
+count_rtype
+count_activity <- table(raw_adk_data['activity'])
+count_activity
+
+```
+
+Check correlation between variables. 
+
+
+There seems to be a correlation between the subject's age and what type of response is typically needed.  It can be concluded that as people get older, they may become more familiar with the land, or simply be more careful with their activities.  Search and Rescue responses are the only type that occur for people 30 and under, proving that the younger people should probably have more training on certain skills before traveling into the mountains alone.  Although, the mean is around 35 to 40 years old, meaning that mostly people over 30 are more common in general in the area, and therefore needing the help just as much.  Overall all people traversing into the mountains should have better safety awareness before going out alone, in case any problems occur.
+Another important point to make about this data is the noticable correlation between older people and recovery.  As we all know, as we age our bodies are not as capable as hey used to be, meaning
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(y = subject_age, x = response_type)) +
+  geom_boxplot()+
+  ggtitle("Subject Age vs Response Type") 
+```
+```{r}
+MArecovery <- mean(recovery_data$subject_age, na.rm = "TRUE")
+MArescue <- mean(rescue_data$subject_age, na.rm = "TRUE")
+MAsearch <- mean(search_data$subject_age, na.rm = "TRUE")
+cat('Mean ages
+Recovery= ',MArecovery)
+cat('
+Rescue= ',MArescue)
+cat('
+Search= ',MAsearch)
+```
+
+Perform at least one relevant hypothesis test. 
+
+The first hypothesis test was a two-tailed test to find the difference between between amount of males and females.
+
+```{r}
+female <- raw_adk_data %>%
+  filter(subject_gender == "F")
+
+male <- raw_adk_data %>%
+  filter(subject_gender == "M")
+
+h1 <- t.test(female$subject_age, male$subject_age, alternative = "two.sided", var.equal = FALSE)
+h1
+```
+
+The second hypothesis test performed was a single-tailed hypothesis to see if the ages between rescued males and females differ.  
+The null hypothesis is mu_f - mu_m = 0
+The alternative hypothesis is mu_f - mu_m < 0
+The t-test is performed to find the difference between the two samples.
+After the t-test is run, the value is -3.176, meaning we reject the null hypothesis because the difference between males and females is not 0.
+
+```{r}
+
+female <- raw_adk_data %>%
+  filter(subject_gender == "F")
+
+male <- raw_adk_data %>%
+  filter(subject_gender == "M")
+
+h2 <- t.test(female$subject_age, male$subject_age, alternative = "less", var.equal = FALSE)
+h2
+
+```
+
+
+
+
+Check the various assumptions of for statistical tests.
+
+
+
+For the linear regression analysis, interpret coefficients and/or make relevant predictions and
+summarize their meaning.
+
+```{r}
+raw_adk_data %>% 
+  ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
+  geom_point()+
+  geom_abline(intercept = 3.142535, slope = 0.004627, col="magenta")+
+  ggtitle("Rangers to Age Regression") 
+```
+
+...
+
+
+# Conclusions
+...
+
+
+# References {-}
+
+Data.world
+https://data.world/data-ny-gov/u6hu-h7p5
