@@ -16,8 +16,6 @@ The observed data is concerning the amount of rescues within New York State.  Sp
 # Background
 
 
-
-
 The data set came from Data World, which got the original data from the New York State Government.  The data is an observational study being completed by the search and rescue rangers.
 
 
@@ -64,7 +62,7 @@ Check correlation between variables.
 
 
 There seems to be a correlation between the subject's age and what type of response is typically needed.  It can be concluded that as people get older, they may become more familiar with the land, or simply be more careful with their activities.  Search and Rescue responses are the only type that occur for people 30 and under, proving that the younger people should probably have more training on certain skills before traveling into the mountains alone.  Although, the mean is around 35 to 40 years old, meaning that mostly people over 30 are more common in general in the area, and therefore needing the help just as much.  Overall all people traversing into the mountains should have better safety awareness before going out alone, in case any problems occur.
-Another important point to make about this data is the noticable correlation between older people and recovery.  As we all know, as we age our bodies are not as capable as hey used to be, meaning
+Another important point to make about this data is the noticable correlation between older people and recovery.  As we all know, as we age our bodies are not as capable as they used to be, meaning they are more likely to be injured, causing a need to be rescued.  One way to decrease the need for rescues could be extra training about safety precautions and give fair warnings about certain activities.  For example if a hike has one area that gets slippery before the rest, put up more signs or make sure it is mentioned before anyone even begins the excursion.
 ```{r}
 raw_adk_data %>% 
   ggplot(aes(y = subject_age, x = response_type)) +
@@ -84,6 +82,18 @@ Search= ',MAsearch)
 ```
 
 Perform at least one relevant hypothesis test. 
+
+residuals vs fitted
+normal QQ
+scale location
+residuals vs leverage
+```{r}
+model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
+summary(model)
+plot(model)
+```
+
+
 
 The first hypothesis test was a two-tailed test to find the difference between between amount of males and females.
 
