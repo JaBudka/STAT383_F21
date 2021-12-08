@@ -30,6 +30,18 @@ Just ADK
 raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park == "true")
 ```
+
+Take me on a date
+```{r}
+timey_adk_data <- na.omit(raw_adk_data) %>%
+  mutate(format(strptime(incident_start_time, "%I:%M %p"), "%H:%M"))
+  # timey_adk_data %>%
+  #   mutate(true_adk_start_time = true_start_time)
+  # mutate(true_start_date = paste(incident_start_date,"",incident_start_time)) %>%
+  # mdy_hm(true_start_date)
+```
+
+
 Not ADK
 ```{r}
 raw_not_adk_data <- raw_sr_data %>%
@@ -75,8 +87,7 @@ MAPS!
 
 ADK Region
 ```{r}
-adk_geom <- st_read("apaLandClass/apaLandClass202111.shp") %>%
-plot() 
+
 ```
 
 
@@ -84,7 +95,8 @@ Relevant Data
 ```{r}
 adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
   select(location_found_latitude,location_found_longitude) %>%
-st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) %>%
+  plot()
 
 ```
 
