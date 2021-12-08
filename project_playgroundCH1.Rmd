@@ -57,6 +57,45 @@ Rescue= ',MArescue)
 cat('
 Search= ',MAsearch)
 ```
+```{r}
+raw_adk_data %>%
+  ggplot(aes(y = subject_age, x = situation)) +
+  geom_boxplot()+
+  ggtitle("Subject Age vs Situation") 
+```
+```{r}
+illness_data <- raw_adk_data %>%
+  filter(situation=="Illness")
+injured_data <- raw_adk_data %>%
+  filter(situation=="Injured")
+lost_data <- raw_adk_data %>%
+  filter(situation=="Lost")
+missing_data <- raw_adk_data %>%
+  filter(situation=="Missing")
+overdue_data <- raw_adk_data %>%
+  filter(situation=="Overdue")
+stranded_data <- raw_adk_data %>%
+  filter(situation=="Stranded")
 
+MAillness <- mean(illness_data$subject_age, na.rm = "TRUE")
+MAinjured <- mean(injured_data$subject_age, na.rm = "TRUE")
+MAlost <- mean(lost_data$subject_age, na.rm = "TRUE")
+MAmissing <- mean(missing_data$subject_age, na.rm = "TRUE")
+MAoverdue <- mean(overdue_data$subject_age, na.rm = "TRUE")
+MAstranded <- mean(stranded_data$subject_age, na.rm = "TRUE")
+
+cat('Mean ages
+Illness= ',MAillness)
+cat('
+Injured= ',MAinjured)
+cat('
+Lost= ',MAlost)
+cat('
+Missing= ',MAmissing)
+cat('
+Overdue= ',MAoverdue)
+cat('
+Stranded= ',MAstranded)
+```
 
 
