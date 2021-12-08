@@ -1,0 +1,171 @@
+---
+title: "Project Playground"
+output: html_notebook
+---
+
+
+Load Packages
+```{r Load Packages}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+```
+
+
+Load Data
+```{r Load Data}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park=="true")
+
+```
+
+```{r}
+search_data <- raw_adk_data %>%
+  filter(response_type=="Search")
+rescue_data <- raw_adk_data %>%
+  filter(response_type=="Rescue")
+recovery_data <- raw_adk_data %>%
+  filter(response_type=="Recovery")
+```
+```{r}
+plot(density(search_data$subject_age, na.rm = "TRUE"))
+plot(density(rescue_data$subject_age, na.rm = "TRUE"))
+plot(density(recovery_data$subject_age, na.rm = "TRUE"))
+```
+
+```{r}
+raw_adk_data %>%
+  ggplot(aes(y = subject_age, x = response_type)) +
+  geom_boxplot()+
+  ggtitle("Subject Age vs Response Type") 
+```
+```{r}
+MArecovery <- mean(recovery_data$subject_age, na.rm = "TRUE")
+MArescue <- mean(rescue_data$subject_age, na.rm = "TRUE")
+MAsearch <- mean(search_data$subject_age, na.rm = "TRUE")
+cat('Mean ages
+Recovery= ',MArecovery)
+cat('
+Rescue= ',MArescue)
+cat('
+Search= ',MAsearch)
+```
+```{r}
+raw_adk_data %>%
+  ggplot(aes(y = subject_age, x = situation)) +
+  geom_boxplot()
+  ggtitle("Subject Age vs Situation") 
+```
+```{r}
+illness_data <- raw_adk_data %>%
+  filter(situation=="Illness")
+injured_data <- raw_adk_data %>%
+  filter(situation=="Injured")
+lost_data <- raw_adk_data %>%
+  filter(situation=="Lost")
+missing_data <- raw_adk_data %>%
+  filter(situation=="Missing")
+overdue_data <- raw_adk_data %>%
+  filter(situation=="Overdue")
+stranded_data <- raw_adk_data %>%
+  filter(situation=="Stranded")
+
+MAillness <- mean(illness_data$subject_age, na.rm = "TRUE")
+MAinjured <- mean(injured_data$subject_age, na.rm = "TRUE")
+MAlost <- mean(lost_data$subject_age, na.rm = "TRUE")
+MAmissing <- mean(missing_data$subject_age, na.rm = "TRUE")
+MAoverdue <- mean(overdue_data$subject_age, na.rm = "TRUE")
+MAstranded <- mean(stranded_data$subject_age, na.rm = "TRUE")
+
+cat('Mean ages
+Illness= ',MAillness)
+cat('
+Injured= ',MAinjured)
+cat('
+Lost= ',MAlost)
+cat('
+Missing= ',MAmissing)
+cat('
+Overdue= ',MAoverdue)
+cat('
+Stranded= ',MAstranded)
+```
+```{r}
+recovery_illness_data <- illness_data %>%
+  filter(response_type=="Recovery")
+rescue_illness_data <- illness_data %>%
+  filter(response_type=="Rescue")
+search_illness_data <- illness_data %>%
+  filter(response_type=="Search")
+  
+recovery_injured_data <- injured_data %>%
+  filter(response_type=="Recovery")
+rescue_injured_data <- injured_data %>%
+  filter(response_type=="Rescue")
+search_injured_data <- injured_data %>%
+  filter(response_type=="Search")
+  
+recovery_lost_data <- lost_data %>%
+  filter(response_type=="Recovery")
+rescue_lost_data <- lost_data %>%
+  filter(response_type=="Rescue")
+search_lost_data <- lost_data %>%
+  filter(response_type=="Search")
+  
+recovery_missing_data <- missing_data %>%
+  filter(response_type=="Recovery")
+rescue_missing_data <- missing_data %>%
+  filter(response_type=="Rescue")
+search_missing_data <- missing_data %>%
+  filter(response_type=="Search")
+  
+recovery_overdue_data <- overdue_data %>%
+  filter(response_type=="Recovery")
+rescue_overdue_data <- overdue_data %>%
+  filter(response_type=="Rescue")
+search_overdue_data <- overdue_data %>%
+  filter(response_type=="Search")
+  
+recovery_stranded_data <- stranded_data %>%
+  filter(response_type=="Recovery")
+rescue_stranded_data <- stranded_data %>%
+  filter(response_type=="Rescue")
+search_stranded_data <- stranded_data %>%
+  filter(response_type=="Search")
+
+```
+
+```{r}
+age_recovery_illness_data <- recovery_illness_data$subject_age
+age_rescue_illness_data <- rescue_illness_data$subject_age
+age_search_illness_data <- search_illness_data$subject_age
+  
+age_recovery_injured_data <- recovery_injured_data$subject_age
+age_rescue_injured_data <- rescue_injured_data$subject_age
+age_search_injured_data <- search_injured_data$subject_age
+  
+age_recovery_lost_data <- recovery_lost_data$subject_age
+age_rescue_lost_data <- rescue_lost_data$subject_age
+age_search_lost_data <- search_lost_data$subject_age
+  
+age_recovery_missing_data <- recovery_missing_data$subject_age
+age_rescue_missing_data <- rescue_missing_data$subject_age
+age_search_missing_data <- search_missing_data$subject_age
+  
+age_recovery_overdue_data <- recovery_overdue_data$subject_age
+age_rescue_overdue_data <- rescue_overdue_data$subject_age
+age_search_overdue_data <- search_overdue_data$subject_age
+  
+age_recovery_stranded_data <- recovery_stranded_data$subject_age
+age_rescue_stranded_data <- rescue_stranded_data$subject_age
+age_search_stranded_data <- search_stranded_data$subject_age
+
+boxplot(age_recovery_illness_data,age_rescue_illness_data,age_search_illness_data,age_recovery_injured_data,age_rescue_injured_data,age_search_injured_data,age_recovery_lost_data,age_rescue_lost_data,age_search_lost_data,age_recovery_missing_data,age_rescue_missing_data,age_search_missing_data,age_recovery_overdue_data,age_rescue_overdue_data,age_search_overdue_data,age_recovery_stranded_data,age_rescue_stranded_data,age_search_stranded_data, names = c("recovery_illness","rescue_illness","search_illness","recovery_injured","rescue_injured","search_injured","recovery_lost","rescue_lost","search_lost","recovery_missing","rescue_missing","search_missing","recovery_overdue","rescue_overdue","search_overdue","recovery_stranded","rescue_stranded","search_stranded"))
+```
