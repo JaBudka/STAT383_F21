@@ -35,9 +35,10 @@ Take me on a date
 ```{r}
 timey_adk_data <- na.omit(raw_adk_data) %>%
   mutate(true_start_date = paste(incident_start_date,"",format(strptime(incident_start_time, "%I:%M %p"), "%H:%M:00"))) %>%
-  mutate(true_closed_date = paste(incident_closed_date,"",format(strptime(incident_closed_time, "%I:%M %p"), "%H:%M:00"))) #%>%
+  mutate(true_closed_date = paste(incident_closed_date,"",format(strptime(incident_closed_time, "%I:%M %p"), "%H:%M:00"))) %>%
 
-#mdy_hms(true_start_date)
+mutate(actual_start = mdy_hms(true_start_date)) %>%
+mutate(actual_closed = mdy_hms(true_closed_date))
 #  as.POSIXct(actual_start_time,format="%m/%d/%Y %H:%M",tz="EST")
   # mutate(actual_start_time = AsDateTime(true_start_date,us.format = TRUE))
 ```
