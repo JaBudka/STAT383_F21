@@ -30,6 +30,20 @@ Just ADK
 raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park == "true")
 ```
+
+Take me on a date
+```{r}
+timey_adk_data <- na.omit(raw_adk_data) %>%
+  mutate(true_start_date = paste(incident_start_date,"",format(strptime(incident_start_time, "%I:%M %p"), "%H:%M:00"))) %>%
+  mutate(true_closed_date = paste(incident_closed_date,"",format(strptime(incident_closed_time, "%I:%M %p"), "%H:%M:00"))) %>%
+
+mutate(actual_start = mdy_hms(true_start_date)) %>%
+mutate(actual_closed = mdy_hms(true_closed_date))
+#  as.POSIXct(actual_start_time,format="%m/%d/%Y %H:%M",tz="EST")
+  # mutate(actual_start_time = AsDateTime(true_start_date,us.format = TRUE))
+```
+
+
 Not ADK
 ```{r}
 raw_not_adk_data <- raw_sr_data %>%
@@ -75,8 +89,7 @@ MAPS!
 
 ADK Region
 ```{r}
-adk_geom <- st_read("apaLandClass/apaLandClass202111.shp") %>%
-plot() 
+
 ```
 
 
@@ -85,6 +98,14 @@ Relevant Data
 adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
   select(location_found_latitude,location_found_longitude) %>%
 st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
+# adk_geom_data <- left_join(adk_geom_data,raw_adk_data[complete.cases(raw_adk_data), ],by=c("code")) 
+
+tmap_mode("view")
+
+tm_shape(adk_geom_data) +
+  # tm_borders() +
+  # tm_shape(adk_geom_data) +
+  tm_dots(size=0.01,col="red")
 
 ```
 
