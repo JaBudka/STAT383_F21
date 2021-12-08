@@ -60,7 +60,7 @@ Search= ',MAsearch)
 ```{r}
 raw_adk_data %>%
   ggplot(aes(y = subject_age, x = situation)) +
-  geom_boxplot()+
+  geom_boxplot()
   ggtitle("Subject Age vs Situation") 
 ```
 ```{r}
@@ -99,46 +99,73 @@ Stranded= ',MAstranded)
 ```
 ```{r}
 recovery_illness_data <- illness_data %>%
-  filter(situation=="Recovery")
+  filter(response_type=="Recovery")
 rescue_illness_data <- illness_data %>%
-  filter(situation=="Rescue")
+  filter(response_type=="Rescue")
 search_illness_data <- illness_data %>%
-  filter(situation=="Search")
+  filter(response_type=="Search")
   
 recovery_injured_data <- injured_data %>%
-  filter(situation=="Recovery")
+  filter(response_type=="Recovery")
 rescue_injured_data <- injured_data %>%
-  filter(situation=="Rescue")
+  filter(response_type=="Rescue")
 search_injured_data <- injured_data %>%
-  filter(situation=="Search")
+  filter(response_type=="Search")
   
 recovery_lost_data <- lost_data %>%
-  filter(situation=="Recovery")
+  filter(response_type=="Recovery")
 rescue_lost_data <- lost_data %>%
-  filter(situation=="Rescue")
+  filter(response_type=="Rescue")
 search_lost_data <- lost_data %>%
-  filter(situation=="Search")
+  filter(response_type=="Search")
   
 recovery_missing_data <- missing_data %>%
-  filter(situation=="Recovery")
+  filter(response_type=="Recovery")
 rescue_missing_data <- missing_data %>%
-  filter(situation=="Rescue")
+  filter(response_type=="Rescue")
 search_missing_data <- missing_data %>%
-  filter(situation=="Search")
+  filter(response_type=="Search")
   
 recovery_overdue_data <- overdue_data %>%
-  filter(situation=="Recovery")
+  filter(response_type=="Recovery")
 rescue_overdue_data <- overdue_data %>%
-  filter(situation=="Rescue")
+  filter(response_type=="Rescue")
 search_overdue_data <- overdue_data %>%
-  filter(situation=="Search")
+  filter(response_type=="Search")
   
 recovery_stranded_data <- stranded_data %>%
-  filter(situation=="Recovery")
+  filter(response_type=="Recovery")
 rescue_stranded_data <- stranded_data %>%
-  filter(situation=="Rescue")
+  filter(response_type=="Rescue")
 search_stranded_data <- stranded_data %>%
-  filter(situation=="Search")
+  filter(response_type=="Search")
 
 ```
 
+```{r}
+age_recovery_illness_data <- recovery_illness_data$subject_age
+age_rescue_illness_data <- rescue_illness_data$subject_age
+age_search_illness_data <- search_illness_data$subject_age
+  
+age_recovery_injured_data <- recovery_injured_data$subject_age
+age_rescue_injured_data <- rescue_injured_data$subject_age
+age_search_injured_data <- search_injured_data$subject_age
+  
+age_recovery_lost_data <- recovery_lost_data$subject_age
+age_rescue_lost_data <- rescue_lost_data$subject_age
+age_search_lost_data <- search_lost_data$subject_age
+  
+age_recovery_missing_data <- recovery_missing_data$subject_age
+age_rescue_missing_data <- rescue_missing_data$subject_age
+age_search_missing_data <- search_missing_data$subject_age
+  
+age_recovery_overdue_data <- recovery_overdue_data$subject_age
+age_rescue_overdue_data <- rescue_overdue_data$subject_age
+age_search_overdue_data <- search_overdue_data$subject_age
+  
+age_recovery_stranded_data <- recovery_stranded_data$subject_age
+age_rescue_stranded_data <- rescue_stranded_data$subject_age
+age_search_stranded_data <- search_stranded_data$subject_age
+
+boxplot(age_recovery_illness_data,age_rescue_illness_data,age_search_illness_data,age_recovery_injured_data,age_rescue_injured_data,age_search_injured_data,age_recovery_lost_data,age_rescue_lost_data,age_search_lost_data,age_recovery_missing_data,age_rescue_missing_data,age_search_missing_data,age_recovery_overdue_data,age_rescue_overdue_data,age_search_overdue_data,age_recovery_stranded_data,age_rescue_stranded_data,age_search_stranded_data, names = c("recovery_illness","rescue_illness","search_illness","recovery_injured","rescue_injured","search_injured","recovery_lost","rescue_lost","search_lost","recovery_missing","rescue_missing","search_missing","recovery_overdue","rescue_overdue","search_overdue","recovery_stranded","rescue_stranded","search_stranded"))
+```
