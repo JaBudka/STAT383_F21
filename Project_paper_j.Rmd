@@ -34,13 +34,19 @@ library (readr)
 urlfile="https://raw.githubusercontent.com/JaBudka/STAT383_F21/Project/SR_data.csv"
 raw_sr_data<-read_csv(url(urlfile)) %>%
   clean_names()
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
 ```
 ...
 
-
 # Methods and Results
 
-
+To help us visualise the data we can look at all the incidents plotted on a map of New York State as shown in section 3.1. From visual inspection, we can see the highest density of rescues occur in the Adirondacks. We can verify this by using the table function to summarize the results.
+```{r echo=FALSE, message=FALSE}
+count_adk <-  table(raw_sr_data['incident_adirondack_park'])
+  rownames(count_adk) = c("Outside ADK", "Inside ADK")
+View(count_adk)
+```
 
 
 The two plots below are created from location of the rescues within New York State.  Looking at the plot of the entire state, there are two regions where rescues occur more frequently, the high peaks being the larger area of concentration.  Because of this concentration, a second plot was made to focus on the rescues within the Adirondack mountains. 
