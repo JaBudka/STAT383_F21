@@ -89,12 +89,6 @@ raw_adk_data %>%
   ggtitle("Subject Age vs Response Type") 
 ```
 
-```{r}
-
-raw_adk_data %>%
-  group_by(response_type) %>%
-  summarize(r = cor(x = subject_age, y = number_of_rangers_involved, use = "complete.obs"))
-```
 
 ```{r echo=FALSE}
 search_data <- raw_adk_data %>%
@@ -114,8 +108,32 @@ cat('
 Search= ',MAsearch)
 ```
 
+```{r}
+mean(y$incident_time_elapsed)
+
+search <- y %>%
+  filter(response_type=="Search")
+rescue <- y %>%
+  filter(response_type=="Rescue")
+recovery <- y %>%
+  filter(response_type=="Recovery")
+
+rev <- mean(search$incident_time_elapsed, na.rm = "TRUE")
+res <- mean(rescue$incident_time_elapsed, na.rm = "TRUE")
+sea <- mean(recovery$incident_time_elapsed, na.rm = "TRUE")
+cat('Mean incident time elapsed
+Recovery= ',rev)
+cat('
+Rescue= ',res)
+cat('
+Search= ',sea)
+```
+
+
 Perform at least one relevant hypothesis test. 
 
+
+Two hypothesis tests were performed
 
 The first hypothesis test was a two-tailed test to find the difference between between amount of males and females.
 
@@ -149,6 +167,33 @@ h2
 
 ```
 
+```{r}
+# Does the mean case time differ between search and rescue?
+t.test(search$incident_time_elapsed,rescue$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
+
+# Does the mean case time differ between recovery and search?
+t.test(recovery$incident_time_elapsed,search$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
+
+```
+```{r}
+incident_model <- lm(incident_time_elapsed~number_of_rangers_involved, data = y)
+incident_model
+# intercept 1206.5
+# slope 624.2 
+# this means predicted time = 624.2 * rangers involved
+```
+
+```{r}
+
+#y %>% ggplot(aes(x = number_of_rangers_involved, y = incident_time_elapsed)) +
+#  geom_point() +
+#  geom_abline(intercept = 3.257e+00, slope = 8.195e-06 )
+#incident_model$residuals
+sum(incident_model$residuals^2)
+summary(incident_model)
+
+# Because p is less than alpha, we reject the null hypothesis. We have reason to believe that there is a linear relationship between incident time elapsed and number of rangers involved
+```
 
 
 
@@ -159,6 +204,33 @@ model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
 summary(model)
 plot(model)
 ```
+
+```{r}
+
+# predict the time to close a case with 3 rangers
+predict(incident_model, newdata = data.frame(number_of_rangers_involved = 3))
+
+# correlation between time elapsed and number of rangers for all types of incidents
+y %>%
+  ggplot(aes(x = incident_time_elapsed, y = number_of_rangers_involved, color = response_type)) +
+  geom_point(size = 0.1) +
+  facet_wrap(vars(response_type))
+
+# looking at correlation for each response type
+# there is a high correlation between time elapsed and number of rangers involved for fugitive search
+# the other ones dont show a high correlation but this is kinda expected because there are lots of outliers
+y %>%
+  group_by(response_type) %>%
+  summarize(r = cor(incident_time_elapsed, number_of_rangers_involved, use = "complete.obs"))
+
+
+# incident model qq plot
+plot(incident_model)
+
+```
+
+
+
 
 
 For the linear regression analysis, interpret coefficients and/or make relevant predictions and
@@ -179,6 +251,17 @@ cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "com
 ```{r echo=FALSE}
 x <- lm(formula = number_of_rangers_involved ~ subject_age,data=raw_adk_data)
 summary(x)
+```
+
+```{r}
+
+raw_adk_data %>%
+  group_by(response_type) %>%
+  summarize(r = cor(x = subject_age, y = number_of_rangers_involved, use = "complete.obs"))
+```
+
+```{r}
+cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
 ```
 
 ...
