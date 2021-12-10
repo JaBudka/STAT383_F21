@@ -31,6 +31,19 @@ raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park == "true")
 ```
 
+All Data Map
+```{r}
+raw_sr_map <- raw_sr_data[complete.cases(raw_sr_data), ] %>%
+  # select(location_found_latitude,location_found_longitude) %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326)
+tmap_mode("view")
+tm_shape(raw_sr_map) +
+  # tm_borders() +
+  # tm_shape(adk_geom_data) +
+  tm_dots(size=0.02,col="red", alpha = 0.5) + tm_legend(outside = TRUE) #tm_text("Locations of Incidents in New York State that Required Ranger Assistance")
+```
+
+
 Take me on a date
 ```{r}
 timey_adk_data <- na.omit(raw_adk_data) %>%
@@ -38,9 +51,8 @@ timey_adk_data <- na.omit(raw_adk_data) %>%
   mutate(true_closed_date = paste(incident_closed_date,"",format(strptime(incident_closed_time, "%I:%M %p"), "%H:%M:00"))) %>%
 
 mutate(actual_start = mdy_hms(true_start_date)) %>%
-mutate(actual_closed = mdy_hms(true_closed_date))
-#  as.POSIXct(actual_start_time,format="%m/%d/%Y %H:%M",tz="EST")
-  # mutate(actual_start_time = AsDateTime(true_start_date,us.format = TRUE))
+mutate(actual_closed = mdy_hms(true_closed_date)) %>%
+  mutate(duration = (actual_closed-actual_start))
 ```
 
 
@@ -96,7 +108,7 @@ ADK Region
 Relevant Data
 ```{r}
 adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
-  select(location_found_latitude,location_found_longitude) %>%
+  # select(location_found_latitude,location_found_longitude) %>%
 st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
 # adk_geom_data <- left_join(adk_geom_data,raw_adk_data[complete.cases(raw_adk_data), ],by=c("code")) 
 
@@ -105,7 +117,7 @@ tmap_mode("view")
 tm_shape(adk_geom_data) +
   # tm_borders() +
   # tm_shape(adk_geom_data) +
-  tm_dots(size=0.01,col="red")
+  tm_dots(size=0.02,col="subject_age", alpha = 0.7, palette = "Spectral")
 
 ```
 
