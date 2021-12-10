@@ -1,5 +1,5 @@
 ---
-title: "Search and Rescues on the Adirondacks"
+title: "Search and Rescues in the Adirondacks"
 author: "Kristina Franklin, Rosie Delwiche, Connor Hathaway, Jackie Budka"
 output: 
   html_notebook:
@@ -8,20 +8,41 @@ output:
 
 # Introduction
 
-Every year, the New York State Forest Rangers have to rescue people who use the outdoors for recreation. Some get injured and need evacuation, some get lost and need search and rescue, but all put a burden on our park services resources. Any efforts to educate people on how to be safer and more responsible in nature will go a long way towards helping alleviate this burden but the Department of Environmental Conservation does not have the resources to market to everyone. In our analysis, we will try to identify groups that are at a greater risk of needing evacuation so we can make a recommendation on where best to allocate resources on awareness. This is observational data originally found on Data World (https://data.world/) from the NYSDEC on forest ranger incident reports. In order to help understand the data it would be helpful for the reader to have previous knowledge about recreational activities in New York State forests and the risks involved with those activities. We decided to focus on the Adirondack Park because of the region's high traffic and ability to attract inexperienced visitors. The variables of interest are the amount of rangers, amount of people being rescued, age and gender of rescued, and the type of activity that caused the accident. We will be analyzing the rescues happening in the Adirondack Park to try to find groups of people who are at a greater risk of needing rescue and would therefore benefit more from targeted awareness campaigns.
-
+Every year, the New York State Forest Rangers have to rescue people who use the outdoors for recreation. Some get injured and need evacuation, some get lost and need search and rescue, but all put a burden on our park services resources. Any efforts to educate people on how to be safer and more responsible in nature will go a long way towards helping alleviate this burden but the Department of Environmental Conservation does not have the resources to market to everyone. In our analysis, we will try to identify groups that are at a greater risk of needing evacuation so we can make a recommendation on where best to allocate resources on awareness. This is observational data originally found on Data World (https://data.world/) from the NYSDEC on forest ranger incident reports. In order to help understand the data it would be helpful for the reader to have previous knowledge about recreational activities in New York State forests and the risks involved with those activities. We decided to focus on the Adirondack Park because of the region's high traffic and ability to attract inexperienced visitors. &&&&The variables of interest are the amount of rangers involved, amount of people being rescued, age and gender of rescued, and the type of activity that caused the accident. We will be analyzing the rescues happening in the Adirondack Park to try to find groups of people who are at a greater risk of needing rescue and would therefore benefit more from targeted awareness campaigns.
 
 ...
 
 
 # Methods and Results
 
-Summarize data. Use both numerical and graphical summaries.
+```{r include=FALSE}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(tidymodels)
+library(httr)
+library(jsonlite)
+library(sf)
+library(tmap)
+```
 
 
 The two plots below are created from location of the rescues within New York State.  Looking at the plot of the entire state, there are two regions where rescues occur more frequently, the high peaks being the larger area of concentration.  Because of this concentration, a second plot was made to focus on the rescues within the Adirondack mountains. 
-```{r}
 
+## Location Found of all Incidents
+```{r echo=FALSE}
+raw_sr_data <- read.csv("SR_data.csv") %>%
+  clean_names()
+raw_sr_map <- raw_sr_data[complete.cases(raw_sr_data), ] %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326)
+tmap_mode("view")
+tm_shape(raw_sr_map) +
+  tm_dots(size=0.02,col="red", alpha = 0.5) + tm_legend(outside = TRUE) 
+```
+## Location Found in Adirondacks Grouped by Age
+```{r echo=FALSE}
 raw_sr_data %>% 
   ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
   geom_point()+
@@ -38,7 +59,7 @@ The data has many different variables and presented to us in a large confusing t
 
 As you can see, there is more chainsaw then flood victims.
 
-```{r}
+```{r echo=FALSE}
 count_gender <-  table(raw_adk_data['subject_gender'])
 count_gender
 count_rtype <- table(raw_adk_data['response_type'])
@@ -53,13 +74,13 @@ Check correlation between variables.
 
 There seems to be a correlation between the subject's age and what type of response is typically needed.  It can be concluded that as people get older, they may become more familiar with the land, or simply be more careful with their activities.  Search and Rescue responses are the only type that occur for people 30 and under, proving that the younger people should probably have more training on certain skills before traveling into the mountains alone.  Although, the mean is around 35 to 40 years old, meaning that mostly people over 30 are more common in general in the area, and therefore needing the help just as much.  Overall all people traversing into the mountains should have better safety awareness before going out alone, in case any problems occur.
 Another important point to make about this data is the noticable correlation between older people and recovery.  As we all know, as we age our bodies are not as capable as they used to be, meaning they are more likely to be injured, causing a need to be rescued.  One way to decrease the need for rescues could be extra training about safety precautions and give fair warnings about certain activities.  For example if a hike has one area that gets slippery before the rest, put up more signs or make sure it is mentioned before anyone even begins the excursion.
-```{r}
+```{r echo=FALSE}
 raw_adk_data %>% 
   ggplot(aes(y = subject_age, x = response_type)) +
   geom_boxplot()+
   ggtitle("Subject Age vs Response Type") 
 ```
-```{r}
+```{r echo=FALSE}
 search_data <- raw_adk_data %>%
   filter(response_type=="Search")
 rescue_data <- raw_adk_data %>%
@@ -83,7 +104,7 @@ residuals vs fitted
 normal QQ
 scale location
 residuals vs leverage
-```{r}
+```{r echo=FALSE}
 model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
 summary(model)
 plot(model)
@@ -93,7 +114,7 @@ plot(model)
 
 The first hypothesis test was a two-tailed test to find the difference between between amount of males and females.
 
-```{r}
+```{r echo=FALSE}
 female <- raw_adk_data %>%
   filter(subject_gender == "F")
 
@@ -110,7 +131,7 @@ The alternative hypothesis is mu_f - mu_m < 0
 The t-test is performed to find the difference between the two samples.
 After the t-test is run, the value is -3.176, meaning we reject the null hypothesis because the difference between males and females is not 0.
 
-```{r}
+```{r echo=FALSE}
 
 female <- raw_adk_data %>%
   filter(subject_gender == "F")
@@ -128,7 +149,7 @@ h2
 
 Check the various assumptions of for statistical tests.
 
-```{r}
+```{r echo=FALSE}
 model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
 summary(model)
 plot(model)
@@ -138,7 +159,7 @@ plot(model)
 For the linear regression analysis, interpret coefficients and/or make relevant predictions and
 summarize their meaning.
 
-```{r}
+```{r echo=FALSE}
 raw_adk_data %>% 
   ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
   geom_point()+
