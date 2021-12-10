@@ -36,7 +36,7 @@ All Data Map
 raw_sr_map <- raw_sr_data[complete.cases(raw_sr_data), ] %>%
   # select(location_found_latitude,location_found_longitude) %>%
 st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326)
-tmap_mode()
+tmap_mode("view")
 tm_shape(raw_sr_map) +
   # tm_borders() +
   # tm_shape(adk_geom_data) +
