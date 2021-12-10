@@ -1,0 +1,127 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+Load Packages
+```{r Load Packages, include=FALSE}
+
+# need update.csv
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(tidymodels)
+library(httr)
+library(jsonlite)
+library(sf)
+library(tmap)
+```
+
+
+Load Data
+```{r Load Data}
+raw_update <- read.csv("update.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+x <- raw_update %>%
+  filter(incident_adirondack_park == "true") 
+```
+
+
+```{r}
+y <- raw_update %>%
+  filter(incident_time_elapsed>0)
+```
+
+
+```{r}
+mean(y$incident_time_elapsed)
+
+search <- y %>%
+  filter(response_type=="Search")
+rescue <- y %>%
+  filter(response_type=="Rescue")
+recovery <- y %>%
+  filter(response_type=="Recovery")
+
+rev <- mean(search$incident_time_elapsed, na.rm = "TRUE")
+res <- mean(rescue$incident_time_elapsed, na.rm = "TRUE")
+sea <- mean(recovery$incident_time_elapsed, na.rm = "TRUE")
+cat('Mean incident time elapsed
+Recovery= ',rev)
+cat('
+Rescue= ',res)
+cat('
+Search= ',sea)
+```
+```{r}
+y %>% 
+  ggplot(aes(y = incident_time_elapsed, x = response_type)) +
+  geom_boxplot()+
+  ggtitle("Incident Time Elapsed vs Response Type") 
+```
+
+```{r}
+# Does the mean case time differ between search and rescue?
+t.test(search$incident_time_elapsed,rescue$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
+
+# Does the mean case time differ between recovery and search?
+t.test(recovery$incident_time_elapsed,search$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
+
+```
+
+```{r}
+incident_model <- lm(incident_time_elapsed~number_of_rangers_involved, data = y)
+incident_model
+# intercept 1206.5
+# slope 624.2 
+# this means predicted time = 624.2 * rangers involved
+```
+
+```{r}
+
+#y %>% ggplot(aes(x = number_of_rangers_involved, y = incident_time_elapsed)) +
+#  geom_point() +
+#  geom_abline(intercept = 3.257e+00, slope = 8.195e-06 )
+#incident_model$residuals
+sum(incident_model$residuals^2)
+summary(incident_model)
+
+# Because p is less than alpha, we reject the null hypothesis. We have reason to believe that there is a linear relationship between incident time elapsed and number of rangers involved
+```
+
+```{r}
+
+# predict the time to close a case with 3 rangers
+predict(incident_model, newdata = data.frame(number_of_rangers_involved = 3))
+
+# correlation between time elapsed and number of rangers for all types of incidents
+y %>%
+  ggplot(aes(x = incident_time_elapsed, y = number_of_rangers_involved, color = response_type)) +
+  geom_point(size = 0.1) +
+  facet_wrap(vars(response_type))
+
+# looking at correlation for each response type
+# there is a high correlation between time elapsed and number of rangers involved for fugitive search
+# the other ones dont show a high correlation but this is kinda expected because there are lots of outliers
+y %>%
+  group_by(response_type) %>%
+  summarize(r = cor(incident_time_elapsed, number_of_rangers_involved, use = "complete.obs"))
+
+
+# incident model qq plot
+plot(incident_model)
+
+```
+```{r}
+#cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
+```
+
