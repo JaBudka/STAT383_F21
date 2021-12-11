@@ -44,19 +44,4 @@ count_activity
 
 ```
 
-```{r}
-raw_adk_data %>%
-  rescue <- filter(response_type == 'Rescue')
-  ggplot(aes(x = activity, y = rescue)+
-  geom_point()+
-  ggtitle("activity vs. rescue"))
 
-model = lm(response_type ~ activity, data = raw_adk_data)
-summary(model)
-
-raw_adk_data %>% 
-  ggplot(aes(x = activity, y = response_type)) +
-  geom_point() +
-#%geom_abline(intercept = 0.005086, slope = 0.876286, col="magenta")+
-  #ggtitle("Formaldehyde data and the regression line")
-```
