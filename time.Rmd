@@ -31,13 +31,13 @@ raw_update <- read.csv("update.csv") %>%
 
 Just ADK
 ```{r}
-xs <- raw_update %>%
-  filter(incident_adirondack_park == "TRUE")
+x <- raw_update %>%
+  filter(incident_adirondack_park == "true") 
 ```
 
 
 ```{r}
-y <- xs %>%
+y <- raw_update %>%
   filter(incident_time_elapsed>0)
 ```
 
@@ -63,10 +63,10 @@ cat('
 Search= ',sea)
 ```
 ```{r}
-y %>%
+y %>% 
   ggplot(aes(y = incident_time_elapsed, x = response_type)) +
   geom_boxplot()+
-  ggtitle("Incident Time Elapsed vs Response Type")
+  ggtitle("Incident Time Elapsed vs Response Type") 
 ```
 
 ```{r}
@@ -82,7 +82,7 @@ t.test(recovery$incident_time_elapsed,search$incident_time_elapsed,alternative =
 incident_model <- lm(incident_time_elapsed~number_of_rangers_involved, data = y)
 incident_model
 # intercept 1206.5
-# slope 624.2
+# slope 624.2 
 # this means predicted time = 624.2 * rangers involved
 ```
 
@@ -122,5 +122,6 @@ plot(incident_model)
 
 ```
 ```{r}
-#cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
+cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
 ```
+

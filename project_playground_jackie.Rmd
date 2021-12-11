@@ -29,10 +29,7 @@ Just ADK
 ```{r}
 raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park == "true")
-
 ```
-
-
 
 All Data Map
 ```{r}
