@@ -122,6 +122,6 @@ plot(incident_model)
 
 ```
 ```{r}
-#cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
+cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
 ```
 
