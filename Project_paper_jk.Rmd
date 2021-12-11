@@ -32,11 +32,11 @@ library (readr)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-urlfile="https://raw.githubusercontent.com/JaBudka/STAT383_F21/Project/SR_data.csv"
+urlfile="https://raw.githubusercontent.com/JaBudka/STAT383_F21/Project/update.csv"
 raw_sr_data<-read.csv(url(urlfile)) %>%
   clean_names()
 raw_adk_data <- raw_sr_data %>%
-  filter(incident_adirondack_park == "true")
+  filter(incident_adirondack_park == "TRUE")
 ```
 ...
 
@@ -88,8 +88,9 @@ count_activity
 
 Our initial endeavor was to see if there was a correlation between subject age and type of response. From our analysis we concluded that there was no such correlation. The box plot is a helpful visualization because 
 
-There seems to be a correlation between the subject's age and what type of response is typically needed.  It can be concluded that as people get older, they may become more familiar with the land, or simply be more careful with their activities.  Search and Rescue responses are the only type that occur for people 30 and under, proving that the younger people should probably have more training on certain skills before traveling into the mountains alone.  Although, the mean is around 35 to 40 years old, meaning that mostly people over 30 are more common in general in the area, and therefore needing the help just as much.  Overall all people traversing into the mountains should have better safety awareness before going out alone, in case any problems occur.
-Another important point to make about this data is the noticeable correlation between older people and recovery.  As we all know, as we age our bodies are not as capable as they used to be, meaning they are more likely to be injured, causing a need to be rescued.  One way to decrease the need for rescues could be extra training about safety precautions and give fair warnings about certain activities.  For example if a hike has one area that gets slippery before the rest, put up more signs or make sure it is mentioned before anyone even begins the excursion.
+There seems to be a relationship between the subject's age and what type of response.  It can be concluded that as people get older, they may become more familiar with the land, or simply be more careful with their activities.  Search and Rescue responses are the only type that occur for people 30 and under, proving that the younger people should probably have more training on certain skills before traveling into the mountains alone.  Although, the mean is around 35 to 40 years old, meaning that mostly people over 30 are more common in general in the area, and therefore needing the help just as much.  Overall all people traversing into the mountains should have better safety awareness before going out alone, in case any problems occur.
+
+Another important point to make about this data is the noticeable relation between older people and recovery.  As we all know, as we age our bodies are not as capable as they used to be, meaning they are more likely to be injured, causing a need to be rescued.  One way to decrease the need for rescues could be extra training about safety precautions and give fair warnings about certain activities.  For example if a hike has one area that gets slippery before the rest, put up more signs or make sure it is mentioned before anyone even begins the excursion.
 ```{r echo=FALSE}
 raw_adk_data %>% 
   ggplot(aes(y = subject_age, x = response_type)) +
@@ -116,7 +117,27 @@ cat('
 Search= ',MAsearch)
 ```
 
-```{r}
+```{r Load Data, include=FALSE}
+raw_update <- read.csv("update.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r include=FALSE}
+xs <- raw_update %>%
+  filter(incident_adirondack_park == "TRUE")
+```
+
+
+```{r include=FALSE}
+y <- xs %>%
+  filter(incident_time_elapsed>0)
+```
+
+Another variable that was considered was the time range to close the incident case.  The mean time per incident type was calculated, giving an average of how long each one took to complete.  Surprisingly, rescue took more time overall than search or recovery.  This is most likely because the case itself is longer in general. For search, when they find the person, the case is closed.  But, when a rescue is required, they need more time to relieve the person from the situation, and get them to safety.
+A way to decrease this time could be to change how they decide search, rescue and recovery.  If search was simply finding the person, rescue is bringing them out, and recovery is their time in the hospital, then many more of these situations can be applied to each incident.
+
+```{r echo=FALSE}
 mean(y$incident_time_elapsed)
 
 search <- y %>%
@@ -141,7 +162,6 @@ Search= ',sea)
 Perform at least one relevant hypothesis test. 
 
 
-Two hypothesis tests were performed
 
 The first hypothesis test was a two-tailed test to find the difference between between amount of males and females.
 
@@ -175,7 +195,9 @@ h2
 
 ```
 
-```{r}
+
+Since two variable relations were considered, another set of t-tests were performed.  A two sided t-test where mu = 
+```{r echo=FALSE}
 # Does the mean case time differ between search and rescue?
 t.test(search$incident_time_elapsed,rescue$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
 
@@ -183,7 +205,7 @@ t.test(search$incident_time_elapsed,rescue$incident_time_elapsed,alternative = "
 t.test(recovery$incident_time_elapsed,search$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
 
 ```
-```{r}
+```{r echo=FALSE}
 incident_model <- lm(incident_time_elapsed~number_of_rangers_involved, data = y)
 incident_model
 # intercept 1206.5
@@ -191,7 +213,7 @@ incident_model
 # this means predicted time = 624.2 * rangers involved
 ```
 
-```{r}
+```{r echo=FALSE}
 
 #y %>% ggplot(aes(x = number_of_rangers_involved, y = incident_time_elapsed)) +
 #  geom_point() +
