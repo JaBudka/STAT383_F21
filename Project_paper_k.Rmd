@@ -72,13 +72,9 @@ tm_shape(adk_geom_data) +
   tm_dots(size=0.02,col="subject_age", alpha = 0.7, palette = "Spectral")
 ```
 
+The data frame can be overwhelming to look at. It is easier to digest when summarized with the "table" function. We can use this function to better visualize the variables of interest. 
 
-
-
-
-The data has many different variables and presented to us in a large confusing table.  The following code sorts the variables we are interested in, and creates a small table for each one.
-
-As you can see, there is more chainsaw then flood victims.
+Some initial observations are that more men need assistance than women, there were more searches than rescues, recoveries, or fugitive searches combined, and the most common activity to need assistance was hiking, followed not so closely by boating.
 
 ```{r echo=FALSE}
 count_gender <-  table(raw_adk_data['subject_gender'])
