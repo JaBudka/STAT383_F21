@@ -1,0 +1,288 @@
+---
+title: "Search and Rescues in the Adirondacks"
+author: "Kristina Franklin, Rosie Delwiche, Connor Hathaway, Jackie Budka"
+output:
+  html_notebook:
+    df_print: paged
+    number_sections: yes
+---
+
+# Introduction
+
+Every year, the New York State Forest Rangers have to rescue people who use the outdoors for recreation. Some get injured and need evacuation, some get lost and need search and rescue, but all put a burden on our park services resources. Any efforts to educate people on how to be safer and more responsible in nature will go a long way towards helping alleviate this burden but the Department of Environmental Conservation does not have the resources to market to everyone. In our analysis, we will try to identify groups that are at a greater risk of needing evacuation so we can make a recommendation on where best to allocate resources on awareness. We decided to focus on the Adirondack Park because of the region's high traffic and ability to attract inexperienced visitors. &&&&The variables of interest are the amount of rangers involved, amount of people being rescued, age and gender of rescued, and the type of activity that caused the accident. We will be analyzing the rescues happening in the Adirondack Park to try to find groups of people who are at a greater risk of needing rescue and would therefore benefit more from targeted awareness campaigns.
+
+...
+
+# Background
+
+This is observational data originally found on Data World (https://data.world/) from the NYSDEC on forest ranger incident reports. In order to help understand the data it would be helpful for the reader to have previous knowledge about recreational activities in New York State forests and the risks involved with those activities. 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(tidymodels)
+library(httr)
+library(jsonlite)
+library(sf)
+library(tmap)
+library (readr)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+urlfile="https://raw.githubusercontent.com/JaBudka/STAT383_F21/Project/SR_data.csv"
+raw_sr_data<-read.csv(url(urlfile)) %>%
+  clean_names()
+raw_adk_data <- raw_sr_data %>%
+  filter(incident_adirondack_park == "true")
+```
+...
+
+# Methods and Results
+
+To help us visualize the location found data we can look at all the incidents plotted on a map of New York State as shown in section 3.1. From visual inspection, we can see the highest density of rescues occur in the Adirondacks. We can verify this by using the table function to summarize the results.
+
+```{r echo=FALSE}
+count_adk <-  table(raw_sr_data['incident_adirondack_park'])
+  rownames(count_adk) = c("Outside ADK", "Inside ADK")
+count_adk
+```
+
+## Location Found of all Incidents
+```{r  echo=FALSE, message=FALSE, warning=FALSE}
+raw_sr_map <- raw_sr_data[complete.cases(raw_sr_data), ] %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326)
+tmap_mode("view")
+tm_shape(raw_sr_map) +
+  tm_dots(size=0.02,col="red", alpha = 0.5) + tm_legend(outside = TRUE) 
+```
+
+...
+
+One of the variables we focused the most on was the age of the rescued. Section 3.2 displays the location found data again by subject age except this time just for incidents that started in the Adirondack park. There are a few outliers where people were found outside the park. These are likely due to the person being reported missing but then being found at home. 
+
+## Location Found in Adirondacks Grouped by Age
+```{r  echo=FALSE, message=FALSE, warning=FALSE}
+adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
+tmap_mode("view")
+tm_shape(adk_geom_data) +
+  tm_dots(size=0.02,col="subject_age", alpha = 0.7, palette = "Spectral")
+```
+
+The data frame can be overwhelming to look at. It is easier to digest when summarized with the "table" function. We can use this function to better visualize the variables of interest. 
+
+Some initial observations are that more men need assistance than women, there were more searches than rescues, recoveries, or fugitive searches combined, and the most common activity to need assistance was hiking, followed not so closely by boating.
+
+```{r echo=FALSE}
+count_gender <-  table(raw_adk_data['subject_gender'])
+count_gender
+count_rtype <- table(raw_adk_data['response_type'])
+count_rtype
+count_activity <- table(raw_adk_data['activity'])
+count_activity
+
+```
+
+Our initial endeavor was to see if there was a correlation between subject age and type of response. From our analysis we concluded that there was no such correlation. The box plot is a helpful visualization because 
+
+There seems to be a correlation between the subject's age and what type of response is typically needed.  It can be concluded that as people get older, they may become more familiar with the land, or simply be more careful with their activities.  Search and Rescue responses are the only type that occur for people 30 and under, proving that the younger people should probably have more training on certain skills before traveling into the mountains alone.  Although, the mean is around 35 to 40 years old, meaning that mostly people over 30 are more common in general in the area, and therefore needing the help just as much.  Overall all people traversing into the mountains should have better safety awareness before going out alone, in case any problems occur.
+Another important point to make about this data is the noticeable correlation between older people and recovery.  As we all know, as we age our bodies are not as capable as they used to be, meaning they are more likely to be injured, causing a need to be rescued.  One way to decrease the need for rescues could be extra training about safety precautions and give fair warnings about certain activities.  For example if a hike has one area that gets slippery before the rest, put up more signs or make sure it is mentioned before anyone even begins the excursion.
+```{r echo=FALSE}
+raw_adk_data %>% 
+  ggplot(aes(y = subject_age, x = response_type)) +
+  geom_boxplot()+
+  ggtitle("Subject Age vs Response Type") 
+```
+
+
+```{r echo=FALSE}
+search_data <- raw_adk_data %>%
+  filter(response_type=="Search")
+rescue_data <- raw_adk_data %>%
+  filter(response_type=="Rescue")
+recovery_data <- raw_adk_data %>%
+  filter(response_type=="Recovery")
+MArecovery <- mean(recovery_data$subject_age, na.rm = "TRUE")
+MArescue <- mean(rescue_data$subject_age, na.rm = "TRUE")
+MAsearch <- mean(search_data$subject_age, na.rm = "TRUE")
+cat('Mean ages
+Recovery= ',MArecovery)
+cat('
+Rescue= ',MArescue)
+cat('
+Search= ',MAsearch)
+```
+
+```{r}
+mean(y$incident_time_elapsed)
+
+search <- y %>%
+  filter(response_type=="Search")
+rescue <- y %>%
+  filter(response_type=="Rescue")
+recovery <- y %>%
+  filter(response_type=="Recovery")
+
+rev <- mean(search$incident_time_elapsed, na.rm = "TRUE")
+res <- mean(rescue$incident_time_elapsed, na.rm = "TRUE")
+sea <- mean(recovery$incident_time_elapsed, na.rm = "TRUE")
+cat('Mean incident time elapsed
+Recovery= ',rev)
+cat('
+Rescue= ',res)
+cat('
+Search= ',sea)
+```
+
+
+Perform at least one relevant hypothesis test. 
+
+
+Two hypothesis tests were performed
+
+The first hypothesis test was a two-tailed test to find the difference between between amount of males and females.
+
+```{r echo=FALSE}
+female <- raw_adk_data %>%
+  filter(subject_gender == "F")
+
+male <- raw_adk_data %>%
+  filter(subject_gender == "M")
+
+h1 <- t.test(female$subject_age, male$subject_age, alternative = "two.sided", var.equal = FALSE)
+h1
+```
+
+The second hypothesis test performed was a single-tailed hypothesis to see if the ages between rescued males and females differ.  
+The null hypothesis is mu_f - mu_m = 0
+The alternative hypothesis is mu_f - mu_m < 0
+The t-test is performed to find the difference between the two samples.
+After the t-test is run, the value is -3.176, meaning we reject the null hypothesis because the difference between males and females is not 0.
+
+```{r echo=FALSE}
+
+female <- raw_adk_data %>%
+  filter(subject_gender == "F")
+
+male <- raw_adk_data %>%
+  filter(subject_gender == "M")
+
+h2 <- t.test(female$subject_age, male$subject_age, alternative = "less", var.equal = FALSE)
+h2
+
+```
+
+```{r}
+# Does the mean case time differ between search and rescue?
+t.test(search$incident_time_elapsed,rescue$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
+
+# Does the mean case time differ between recovery and search?
+t.test(recovery$incident_time_elapsed,search$incident_time_elapsed,alternative = "two.sided",conf.level = .98)
+
+```
+```{r}
+incident_model <- lm(incident_time_elapsed~number_of_rangers_involved, data = y)
+incident_model
+# intercept 1206.5
+# slope 624.2 
+# this means predicted time = 624.2 * rangers involved
+```
+
+```{r}
+
+#y %>% ggplot(aes(x = number_of_rangers_involved, y = incident_time_elapsed)) +
+#  geom_point() +
+#  geom_abline(intercept = 3.257e+00, slope = 8.195e-06 )
+#incident_model$residuals
+sum(incident_model$residuals^2)
+summary(incident_model)
+
+# Because p is less than alpha, we reject the null hypothesis. We have reason to believe that there is a linear relationship between incident time elapsed and number of rangers involved
+```
+
+
+
+Check the various assumptions of for statistical tests.
+
+```{r echo=FALSE}
+model = lm(number_of_rangers_involved ~ subject_age, data = raw_adk_data)
+summary(model)
+plot(model)
+```
+
+```{r}
+
+# predict the time to close a case with 3 rangers
+predict(incident_model, newdata = data.frame(number_of_rangers_involved = 3))
+
+# correlation between time elapsed and number of rangers for all types of incidents
+y %>%
+  ggplot(aes(x = incident_time_elapsed, y = number_of_rangers_involved, color = response_type)) +
+  geom_point(size = 0.1) +
+  facet_wrap(vars(response_type))
+
+# looking at correlation for each response type
+# there is a high correlation between time elapsed and number of rangers involved for fugitive search
+# the other ones dont show a high correlation but this is kinda expected because there are lots of outliers
+y %>%
+  group_by(response_type) %>%
+  summarize(r = cor(incident_time_elapsed, number_of_rangers_involved, use = "complete.obs"))
+
+
+# incident model qq plot
+plot(incident_model)
+
+```
+
+
+
+
+
+For the linear regression analysis, interpret coefficients and/or make relevant predictions and
+summarize their meaning.
+
+```{r echo=FALSE}
+raw_adk_data %>% 
+  ggplot(aes(x = subject_age, y = number_of_rangers_involved))+
+  geom_point()+
+  geom_abline(intercept = 3.142535, slope = 0.004627, col="magenta")+
+  ggtitle("Rangers to Age Regression") 
+```
+
+```{r echo=FALSE}
+cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
+```
+
+```{r echo=FALSE}
+x <- lm(formula = number_of_rangers_involved ~ subject_age,data=raw_adk_data)
+summary(x)
+```
+
+```{r}
+
+raw_adk_data %>%
+  group_by(response_type) %>%
+  summarize(r = cor(x = subject_age, y = number_of_rangers_involved, use = "complete.obs"))
+```
+
+```{r}
+cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
+```
+
+...
+
+
+# Conclusions
+
+We were unable to find a demographic to target with an awareness campaign because of low statistical significance. From a common sense standpoint it would make sense to market more to hikers because they make up the vast majority of those in need of assistance but since we do not have data on how many people participate in each activity, we cannot definitively say that hikers need assistance at a higher rate than those in other activities. We could extend this study to the rest of New York State and even the rest of the United States, but not all regions are comparable due to differences in usage and common activities. What works in one area might not work elsewhere. 
+One thing that would improve this study is more data and general usage data to compare rates of needed rescue in different demographics. The data on rescues during Covid would be especially interesting to look at since more people engaged with the outdoors. Specifically more inexperienced people. It would also be informative to have another variable in the study that qualitatively rates victim's level of competence. 
+...
+
+
+# References {-}
+
+Data.world
+https://data.world/data-ny-gov/u6hu-h7p5
