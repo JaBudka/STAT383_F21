@@ -5,7 +5,7 @@ output: html_notebook
 
 
 Load Packages
-```{r Load Packages}
+```{r}
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
@@ -14,7 +14,7 @@ library(janitor)
 
 
 Load Data
-```{r Load Data}
+```{r}
 raw_sr_data <- read.csv("SR_data.csv") %>%
   clean_names()
 ```
@@ -98,6 +98,33 @@ cat('
 Stranded= ',MAstranded)
 ```
 ```{r}
+raw_update_data <- read.csv("update.csv") %>%
+  clean_names()
+```
+
+Just ADK
+```{r}
+adk_update_data <- raw_update_data %>%
+  filter(incident_adirondack_park=="TRUE")
+adk_update_data <- adk_update_data %>%
+  filter(incident_time_elapsed > 0)
+```
+
+```{r}
+adk_update_data %>% 
+  ggplot(aes(x = subject_gender, y = subject_age))+
+  geom_boxplot()+
+  ggtitle("Subject Age vs Response type") 
+```
+
+
+
+
+
+
+
+
+```{r}
 recovery_illness_data <- illness_data %>%
   filter(response_type=="Recovery")
 rescue_illness_data <- illness_data %>%
@@ -169,3 +196,15 @@ age_search_stranded_data <- search_stranded_data$subject_age
 
 boxplot(age_recovery_illness_data,age_rescue_illness_data,age_search_illness_data,age_recovery_injured_data,age_rescue_injured_data,age_search_injured_data,age_recovery_lost_data,age_rescue_lost_data,age_search_lost_data,age_recovery_missing_data,age_rescue_missing_data,age_search_missing_data,age_recovery_overdue_data,age_rescue_overdue_data,age_search_overdue_data,age_recovery_stranded_data,age_rescue_stranded_data,age_search_stranded_data, names = c("recovery_illness","rescue_illness","search_illness","recovery_injured","rescue_injured","search_injured","recovery_lost","rescue_lost","search_lost","recovery_missing","rescue_missing","search_missing","recovery_overdue","rescue_overdue","search_overdue","recovery_stranded","rescue_stranded","search_stranded"))
 ```
+
+```{r}
+# Pie Chart with Percentages
+slices <- c(12, 133, 60, 35, 20, 18, 1512, 74, 16, 17, 23, 63, 26, 40, 29)
+lbls <- c("Biking", "Boating", "Camping","Climbing:Rock/Ice","Despondent","Fishing","Hiking","Hunting","ATV","Runaway","Skiing","Snowmobile","Swimming","Walking","Other")
+pct <- round(slices/sum(slices)*100)
+lbls <- paste(lbls, pct) # add percents to labels
+lbls <- paste(lbls,"%",sep="") # ad % to labels
+pie(slices,labels = lbls, col=rainbow(length(lbls)),
+   main="Pie Chart of Activities")
+```
+
