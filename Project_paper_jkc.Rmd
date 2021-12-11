@@ -288,19 +288,9 @@ x <- lm(formula = number_of_rangers_involved ~ subject_age,data=raw_adk_data)
 summary(x)
 ```
 
-We also calculated the correlation of this data below using the "cor()" function. 
-```{r}
-cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
-```
 
-Below we compute the correlation of number of rangers involved based on subject age, but in this case we group by response type. 
 
-```{r}
 
-raw_adk_data %>%
-  group_by(response_type) %>%
-  summarize(r = cor(x = subject_age, y = number_of_rangers_involved, use = "complete.obs"))
-```
 
 
 
