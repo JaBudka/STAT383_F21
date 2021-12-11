@@ -1,68 +1,80 @@
 ---
-title: "Search and Rescues on the Adirondacks"
+title: "Search and Rescues in the Adirondacks"
 author: "Kristina Franklin, Rosie Delwiche, Connor Hathaway, Jackie Budka"
 output:
-  html_document:
-    df_print: paged
   html_notebook:
+    df_print: paged
     number_sections: yes
 ---
 
 # Introduction
 
-The observed data is concerning the amount of rescues within New York State.  Specifically, the rescues within the Adirondack mountains will be considered. The concerned variables are amount of rangers, amount of people being rescued, age and gender of rescued, and the type of activity that caused the accident.  This data is interesting because it can be used to find if certain groups of people should be getting extra safety training before entering the Adirondack Forest.
+Every year, the New York State Forest Rangers have to rescue people who use the outdoors for recreation. Some get injured and need evacuation, some get lost and need search and rescue, but all put a burden on our park services resources. Any efforts to educate people on how to be safer and more responsible in nature will go a long way towards helping alleviate this burden but the Department of Environmental Conservation does not have the resources to market to everyone. In our analysis, we will try to identify groups that are at a greater risk of needing evacuation so we can make a recommendation on where best to allocate resources on awareness. We decided to focus on the Adirondack Park because of the region's high traffic and ability to attract inexperienced visitors. &&&&The variables of interest are the amount of rangers involved, amount of people being rescued, age and gender of rescued, and the type of activity that caused the accident. We will be analyzing the rescues happening in the Adirondack Park to try to find groups of people who are at a greater risk of needing rescue and would therefore benefit more from targeted awareness campaigns.
 
 ...
 
-
 # Background
 
+This is observational data originally found on Data World (https://data.world/) from the NYSDEC on forest ranger incident reports. In order to help understand the data it would be helpful for the reader to have previous knowledge about recreational activities in New York State forests and the risks involved with those activities. 
 
-The data set came from Data World, which got the original data from the New York State Government.  The data is an observational study being completed by the search and rescue rangers.
-
-
-
-by analyzing this data, we hope to find correlations between the types of rescues performed, and who was being rescued, in the Adirondacks.  This will help decide if different people should have more, less, or different safety training before adventuring on their own.
-
-```{r Load Packages, include=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(janitor)
+library(lubridate)
+library(tidymodels)
+library(httr)
+library(jsonlite)
+library(sf)
+library(tmap)
+library (readr)
 ```
 
-```{r Load Data, echo=FALSE}
-raw_sr_data <- read.csv("SR_data.csv") %>%
+```{r message=FALSE, warning=FALSE, include=FALSE}
+urlfile="https://raw.githubusercontent.com/JaBudka/STAT383_F21/Project/SR_data.csv"
+raw_sr_data<-read.csv(url(urlfile)) %>%
   clean_names()
-```
-
-```{r echo=FALSE}
 raw_adk_data <- raw_sr_data %>%
   filter(incident_adirondack_park == "true")
+```
+...
+
+# Methods and Results
+
+To help us visualize the location found data we can look at all the incidents plotted on a map of New York State as shown in section 3.1. From visual inspection, we can see the highest density of rescues occur in the Adirondacks. We can verify this by using the table function to summarize the results.
+
+```{r echo=FALSE}
+count_adk <-  table(raw_sr_data['incident_adirondack_park'])
+  rownames(count_adk) = c("Outside ADK", "Inside ADK")
+count_adk
+```
+
+## Location Found of all Incidents
+```{r echo=FALSE, message=FALSE}
+raw_sr_map <- raw_sr_data[complete.cases(raw_sr_data), ] %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326)
+tmap_mode("view")
+tm_shape(raw_sr_map) +
+  tm_dots(size=0.02,col="red", alpha = 0.5) + tm_legend(outside = TRUE) 
 ```
 
 ...
 
+One of the variables we focused the most on was the age of the rescued. Section 3.2 displays the location found data again by subject age except this time just for incidents that started in the Adirondack park. There are a few outliers where people were found outside the park. These are likely due to the person being reported missing but then being found at home. 
 
-# Methods and Results
-
-Summarize data. Use both numerical and graphical summaries.
-
-
-The two plots below are created from location of the rescues within New York State.  Looking at the plot of the entire state, there are two regions where rescues occur more frequently, the high peaks being the larger area of concentration.  Because of this concentration, a second plot was made to focus on the rescues within the Adirondack mountains. 
-```{r echo=FALSE}
-
-raw_sr_data %>%
-  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
-  geom_point()+
-  ggtitle("Location Found Latitude vs Longitude") 
-
-raw_adk_data %>% 
-  ggplot(aes(x = location_found_longitude, y = location_found_latitude))+
-  geom_point()+
-  ggtitle("Location Found Latitude vs Longitude (Just ADK)") 
-
+## Location Found in Adirondacks Grouped by Age
+```{r echo=FALSE, message=FALSE}
+adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
+st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
+tmap_mode("view")
+tm_shape(adk_geom_data) +
+  tm_dots(size=0.02,col="subject_age", alpha = 0.7, palette = "Spectral")
 ```
+
+
+
+
 
 The data has many different variables and presented to us in a large confusing table.  The following code sorts the variables we are interested in, and creates a small table for each one.
 
