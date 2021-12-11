@@ -293,14 +293,25 @@ raw_adk_data %>%
 ```{r}
 cor(raw_adk_data$subject_age,raw_adk_data$number_of_rangers_involved, use = "complete.obs")
 ```
+```{r echo=FALSE}
 
+#y %>% ggplot(aes(x = number_of_rangers_involved, y = incident_time_elapsed)) +
+#  geom_point() +
+#  geom_abline(intercept = 3.257e+00, slope = 8.195e-06 )
+#incident_model$residuals
+sum(incident_model$residuals^2)
+summary(incident_model)
+
+# Because p is less than alpha, we reject the null hypothesis. We have reason to believe that there is a linear relationship between incident time elapsed and number of rangers involved
+```
 ...
 
 
 # Conclusions
 
-We were unable to find a demographic to target with an awareness campaign because of low statistical significance. From a common sense standpoint it would make sense to market more to hikers because they make up the vast majority of those in need of assistance but since we do not have data on how many people participate in each activity, we cannot definitively say that hikers need assistance at a higher rate than those in other activities. We could extend this study to the rest of New York State and even the rest of the United States, but not all regions are comparable due to differences in usage and common activities. What works in one area might not work elsewhere. 
-One thing that would improve this study is more data and general usage data to compare rates of needed rescue in different demographics. The data on rescues during Covid would be especially interesting to look at since more people engaged with the outdoors. Specifically more inexperienced people. It would also be informative to have another variable in the study that qualitatively rates victim's level of competence. 
+We were unable to find a demographic to target with an awareness campaign because of low statistical significance. From a common sense standpoint it would make sense to market more to hikers because they make up the vast majority of those in need of assistance but since we do not have data on how many people participate in each activity, we cannot definitively say that hikers need assistance at a higher rate than those in other activities. We could extend this study to the rest of New York State and even the rest of the United States, but not all regions are comparable due to differences in usage and common activities. What works in one area might not work elsewhere. We also noticed some errors in the data, specifically in the time elapsed. This was most likely due to user error. The DEC could be notified that their method of inputting dates is flawed.
+One thing that would improve this study is more data and general usage data to compare rates of needed rescue in different demographics. The data on rescues during Covid would be especially interesting to look at since more people engaged with the outdoors. Specifically more inexperienced people. It would also be informative to have another variable in the study that qualitatively rates victim's level of competence. It would be expected that almost all cases are due to inexperienced people but it could also be possible that highly competent people did not realize their limit.
+
 ...
 
 
