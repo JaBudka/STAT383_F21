@@ -51,7 +51,7 @@ count_adk
 ```
 
 ## Location Found of all Incidents
-```{r echo=FALSE, message=FALSE}
+```{r  echo=FALSE, message=FALSE, warning=FALSE}
 raw_sr_map <- raw_sr_data[complete.cases(raw_sr_data), ] %>%
 st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326)
 tmap_mode("view")
@@ -64,7 +64,7 @@ tm_shape(raw_sr_map) +
 One of the variables we focused the most on was the age of the rescued. Section 3.2 displays the location found data again by subject age except this time just for incidents that started in the Adirondack park. There are a few outliers where people were found outside the park. These are likely due to the person being reported missing but then being found at home. 
 
 ## Location Found in Adirondacks Grouped by Age
-```{r echo=FALSE, message=FALSE}
+```{r  echo=FALSE, message=FALSE, warning=FALSE}
 adk_geom_data <- raw_adk_data[complete.cases(raw_adk_data), ] %>%
 st_as_sf(coords = c("location_found_longitude", "location_found_latitude"), crs = 4326) 
 tmap_mode("view")
